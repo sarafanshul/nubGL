@@ -32,12 +32,24 @@ int main() {
     // create window
     GLFWwindow* window = glfwCreateWindow(800, 800, "test window", nullptr, nullptr);
 
-    GLfloat vertices[] = {
-            -0.5f, -0.5f, .0f,
-            0.5f, -0.5f, .0f,
-            0.5f, 0.5f, 0.0f,
-            -0.5f, 0.5f, 0.0f,
-    };
+
+    float r = 0.5, rx = 0, ry = 0;
+    float pi = 3.14159f;
+    int points = 10;
+
+    GLfloat vertices[3*(points + 1)];
+    for(int i = 0 ; i <= points ; i++){
+        float x , y , z = 0;
+
+        float theta=(2*pi*(float)i)/(float)points;
+
+        x = r * cos(theta) + rx;
+        y = r * sin(theta) + ry;
+
+        vertices[i*3]     = x ;
+        vertices[i*3 + 1] = y ;
+        vertices[i*3 + 2] = z ;
+    }
 
     if(!window){
         std::cout << "Unable to create window :(\n";
