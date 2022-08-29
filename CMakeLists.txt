@@ -6,14 +6,27 @@ set(CMAKE_CXX_STANDARD 20)
 add_subdirectory(lib/glfw)
 add_subdirectory(lib/glad)
 
-list(APPEND SOURCES
-    main.cpp
+file(GLOB SOURCES CONFIGURE_DEPENDS
+        ${PROJECT_SOURCE_DIR}/src/include/*.h
+        ${PROJECT_SOURCE_DIR}/src/src/*.cpp
+        ${PROJECT_SOURCE_DIR}/src/main.cpp
 )
 
 find_package(OpenGL REQUIRED)
 find_package(GLUT REQUIRED)
-include_directories( ${OPENGL_INCLUDE_DIRS}  ${GLUT_INCLUDE_DIRS} )
+include_directories( ${OPENGL_INCLUDE_DIRS}  ${GLUT_INCLUDE_DIRS} src/include)
+
+# copy assets file
+# https://stackoverflow.com/a/36533708/11718077
+# https://stackoverflow.com/a/28548494/11718077
+add_custom_target(copy_res_directory ALL
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+        "${CMAKE_SOURCE_DIR}/src/assets" "${CMAKE_BINARY_DIR}"
+        COMMENT "Copy Shaders directory to build tree"
+        VERBATIM
+)
 
 add_executable(OpenGLBasics ${SOURCES} )
+add_dependencies( OpenGLBasics copy_res_directory )
 
 target_link_libraries(OpenGLBasics glfw ${OPENGL_LIBRARIES} ${GLUT_LIBRARY} glad)
