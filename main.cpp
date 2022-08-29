@@ -47,30 +47,27 @@ int main() {
     // specify viewport
     glViewport(0, 0, 800, 800);
 
-    /*         2
-     *        /\
-     *     3 /__\ 4
-     *     /\   /\
-     *   /___\/___\
-     *  0    5     1
-     *   using index buffer to reuse draw points at intersection
-     *   we draw 0, 1, 2 | 3, 4, 5
-     *   and specify index buffer we determine order
-     *   [0, 3, 5] , [5, 4, 1], [3, 2, 4], we repeat same vertices twice.
+    /**
+     * drawing a quadrilateral using index buffer.
+     *             4         3
+     *             ________
+     *            |\      |
+     *           |  \.   |
+     *          |    \  |
+     *         |______\|
+     *         1       2
+     *
      */
     GLfloat vertices[] ={
-            -0.5, -0.5, 0.0, // lower left
-            0.5, -0.5, 0.0, // lower right
-            0.0,  0.5, 0.0, // upper corner
-            -0.5/2, 0.0, 0.0, // inner left
-            0.5/2, 0.0, 0.0, // inner right
-            0.0, -0.5, 0.0, // inner down
+            -0.5, -0.5, 0.0, // bottom left
+            0.5, -0.5, 0.0, // bottom right
+            0.5, 0.5, 0.0,  // top right
+            -0.5, 0.5, 0.0 // top left
     };
 
     GLuint indices[] = {
-        0, 3, 5, // lower left triangle
-        3, 4, 2, // upper triangle
-        5, 4, 1 // lower right triangle
+            0, 1, 3,
+            1, 3, 2
     };
 
     // create shader and attach source -> compile shader
