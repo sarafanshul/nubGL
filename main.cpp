@@ -1,5 +1,5 @@
 #include <iostream>
-#include "math.h"
+#include "cmath"
 #include <glad/glad.h>
 #include "GLFW/glfw3.h"
 
@@ -82,17 +82,17 @@ int main() {
 
 
     // VBO
-    GLuint VBO, VAO;
-    glGenVertexArrays(1, &VAO); // before VBO
-    glGenBuffers(1, &VBO);
+    GLuint VBO[1], VAO[1];
+    glGenVertexArrays(1, VAO); // before VBO
+    glGenBuffers(1, VBO);
 
-    glBindVertexArray(VAO);
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBindVertexArray(VAO[0]);
+    glBindBuffer(GL_ARRAY_BUFFER, VBO[0]);
 
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
     // tells how to read vertex data.
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void *)0 );
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void *)nullptr );
     glEnableVertexAttribArray(0);
 
     glBindBuffer(GL_ARRAY_BUFFER, 0); // ordering is imp.
@@ -106,7 +106,7 @@ int main() {
         glClear(GL_COLOR_BUFFER_BIT);
         glUseProgram(shaderProgram);
 
-        glBindVertexArray(VAO);
+        glBindVertexArray(VAO[0]);
         glPointSize( 20.0 ); // for drawing points
         glDrawArrays(GL_TRIANGLES, 0, sizeof(vertices)/(3*sizeof(float)));
 
@@ -118,8 +118,8 @@ int main() {
     // delete redundant obj
     glDeleteShader(vertexShader);
     glDeleteShader(fragmentShader);
-    glDeleteVertexArrays(1, &VAO);
-    glDeleteBuffers(1, &VBO);
+    glDeleteVertexArrays(1, VAO);
+    glDeleteBuffers(1, VBO);
     glDeleteProgram(shaderProgram);
 
     glfwDestroyWindow(window);
