@@ -32,22 +32,11 @@ int main() {
     // create window
     GLFWwindow* window = glfwCreateWindow(800, 800, "test window", nullptr, nullptr);
 
-    // for triangles
-//    GLfloat vertices[] = {
-//            -0.5f, -0.5f * float(sqrt(3)) / 3    , 0.0f,
-//             0.5f, -0.5f * float(sqrt(3)) / 3    , 0.0f,
-//             0.0f,  0.5f * float(sqrt(3)) * 2 / 3, 0.0f,
-//    };
-    // for square
-    GLfloat vertices[] ={
-            // first triangle
-            -0.5f, -0.5f, 0.0f, // bottom left
-             0.5f, -0.5f, 0.f,  // bottom right
-            -0.5f,  0.5f, 0.0f, // top left
-            // second triangle
-             0.5f, -0.5f, 0.f,  // bottom right
-            -0.5f,  0.5f, 0.0f, // top left
-             0.5f,  0.5f, 0.0f, // top right
+    GLfloat vertices[] = {
+            -0.5f, -0.5f, .0f,
+            0.5f, -0.5f, .0f,
+            0.5f, 0.5f, 0.0f,
+            -0.5f, 0.5f, 0.0f,
     };
 
     if(!window){
@@ -92,7 +81,7 @@ int main() {
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
     // tells how to read vertex data.
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void *)nullptr );
+    glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void *)nullptr );
     glEnableVertexAttribArray(0);
 
     glBindBuffer(GL_ARRAY_BUFFER, 0); // ordering is imp.
@@ -108,7 +97,7 @@ int main() {
 
         glBindVertexArray(VAO[0]);
         glPointSize( 20.0 ); // for drawing points
-        glDrawArrays(GL_TRIANGLES, 0, sizeof(vertices)/(3*sizeof(float)));
+        glDrawArrays(GL_LINE_LOOP, 0, sizeof(vertices)/(3*sizeof(float)));
 
         glfwSwapBuffers(window);
 
