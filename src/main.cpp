@@ -1,5 +1,4 @@
 #include <iostream>
-#include "cmath"
 #include "glad/glad.h"
 #include "GLFW/glfw3.h"
 
@@ -20,10 +19,11 @@
  *
  */
 GLfloat vertices[] ={
-        -0.5, -0.5, 0.0, // bottom left
-        0.5, -0.5, 0.0, // bottom right
-        0.5, 0.5, 0.0,  // top right
-        -0.5, 0.5, 0.0 // top left
+        //   x         y       z             r         g         b         a
+        -0.5, -0.5, 0.0,    0.3f, 0.3f, 0.7f, 0.5f,     // bottom left
+        0.5, -0.5, 0.0,    0.8f, 0.3f, 0.2f, 0.5f,   // bottom right
+        0.5, 0.5, 0.0,   0.9f, 0.0f, 0.0f, 0.5f,  // top right
+        -0.5, 0.5, 0.0,  0.8f, 0.3f, 0.2f, 1.0f, // top left
 };
 
 GLuint indices[] = {
@@ -58,7 +58,9 @@ int main() {
     glfwMakeContextCurrent(window);
 
     // Load GLAD so it configures OpenGL
-    gladLoadGL();
+    if(!gladLoadGL()){
+        std::cerr << "Failed to initialize library loader " << std::endl;
+    }
 
     // Specify the viewport of OpenGL in the Window
     // In this case the viewport goes from x = 0, y = 0, to x = 800, y = 800
@@ -78,12 +80,16 @@ int main() {
     EBO ebo = EBO(indices, sizeof(indices));
 
     // Links VBO to VAO
-    vao.LinkVBO(vbo, 0);
+    vao.LinkVBO(vbo, 0, 3, GL_FLOAT, 7 * sizeof( float ), (void *) 0); // aPos
+    vao.LinkVBO(vbo, 1, 4, GL_FLOAT, 7 * sizeof( float ), (void *) (3 * sizeof( float ))); // aColor.
 
     // Unbind all to prevent accidentally modifying them
     vao.Unbind();
     vbo.Unbind();
     ebo.Unbind();
+
+    // Gets ID of uniform called "scale"
+    GLint uniformID = glGetUniformLocation(shaderProgram.ID, "scale");
 
     // poll window
     while( !glfwWindowShouldClose(window) ){
@@ -94,6 +100,9 @@ int main() {
         glClear(GL_COLOR_BUFFER_BIT);
         // Tell OpenGL which Shader Program we want to use
         shaderProgram.Activate();
+
+        // Assigns a value to the uniform; NOTE: Must always be done after activating the Shader Program
+        glUniform1f(uniformID, 1.0f);
 
         // Bind the VAO so OpenGL knows to use it
         vao.Bind();

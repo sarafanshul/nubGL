@@ -16,7 +16,7 @@ public:
     VAO();
 
     // Links a VBO to the VAO using a certain layout
-    void LinkVBO(VBO& VBO, GLuint layout);
+    void LinkVBO(VBO& VBO, GLuint layout, GLint numComponents, GLenum type, GLsizei stride, void* offset);
 
     // Binds the VAO
     void Bind();
