@@ -69,7 +69,7 @@ int main() {
     // Generates Shader object using shaders default.vert and default.frag
     Shader shaderProgram = Shader("Shaders/default.vert", "Shaders/default.frag");
 
-    // Generates Vertex Array Object and binds it
+    // Generates Vertex Array/Attribute Object and binds it
     VAO vao = VAO();
     vao.Bind();
 
