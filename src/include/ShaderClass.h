@@ -24,7 +24,9 @@ public:
 
 private:
     // Checks if the different Shaders have compiled properly
-    void compileErrors(unsigned int shader, const char* type);
+    static void compileErrors(unsigned int shader, GLint type);
+
+    static GLuint compileShaders(const char* source, GLint type);
 };
 
 #endif //OPENGLBASICS_SHADERCLASS_H

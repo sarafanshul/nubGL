@@ -64,7 +64,7 @@ int main() {
 
     // Specify the viewport of OpenGL in the Window
     // In this case the viewport goes from x = 0, y = 0, to x = 800, y = 800
-    glViewport(0, 0, 800, 800);
+//    glViewport(0, 0, 800, 800); // uncomment if output distorted.
 
     // Generates Shader object using shaders default.vert and default.frag
     Shader shaderProgram = Shader("Shaders/default.vert", "Shaders/default.frag");
