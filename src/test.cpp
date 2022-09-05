@@ -71,7 +71,6 @@ int main(){
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 #endif
 
-
     if ( ! (window = glfwCreateWindow(800, 800, "test", 0, 0)) ){
         glfwTerminate();
         return -1;
@@ -83,23 +82,37 @@ int main(){
         std::cerr << "Failed to initialize library loader " << std::endl;
     }
 
-    float positions[6] = {
-            -0.5f, -0.5f,
-             0.0f,  0.5f,
-             0.5f, -0.5f,
+    float positions[] = {
+            -0.5f, -0.5f, // 0 BL
+             0.5f,  0.5f, // 1 TR
+             0.5f, -0.5f, // 2 BR
+             -0.5,  0.5,  // 3 TL
     };
 
-    GLuint buffer, vao;
+    uint indices[] = {
+            0, 1, 2,
+            1, 3, 0,
+    };
+
+    // in brief vao maintains the binds pointers of other buffers , which can later be drawn.
+    GLuint buffer, vao, ebo;
     glGenBuffers(1, &buffer);
+    glGenBuffers(1, &ebo);
     glGenVertexArrays(1, &vao);
 
     glBindVertexArray(vao);
     glBindBuffer(GL_ARRAY_BUFFER, buffer);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
 
-    glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(float ), positions, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, 8 * sizeof(float ), positions, GL_STATIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, 6 * sizeof(uint), indices, GL_STATIC_DRAW);
 
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(float ) * 2, 0);
+
+    glBindVertexArray(0);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
     std::string vertexShader = R"(
 #version 330 core
@@ -126,7 +139,9 @@ void main(){
 
         glClear(GL_COLOR_BUFFER_BIT);
 
-        glDrawArrays(GL_TRIANGLES, 0, 3);
+        glBindVertexArray(vao); // brings back the bound state of others buffers.
+
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 
         glfwSwapBuffers(window);
 
