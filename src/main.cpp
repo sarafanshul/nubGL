@@ -88,9 +88,6 @@ int main() {
     vbo.Unbind();
     ebo.Unbind();
 
-    // Gets ID of uniform called "scale"
-    GLint uniformID = glGetUniformLocation(shaderProgram.ID, "scale");
-
     // poll window
     while( !glfwWindowShouldClose(window) ){
 
@@ -102,7 +99,7 @@ int main() {
         shaderProgram.Activate();
 
         // Assigns a value to the uniform; NOTE: Must always be done after activating the Shader Program
-        glUniform1f(uniformID, 1.0f);
+        shaderProgram.setFloat("scale", 1.0f);
 
         // Bind the VAO so OpenGL knows to use it
         vao.Bind();

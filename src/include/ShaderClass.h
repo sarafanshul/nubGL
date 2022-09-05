@@ -22,6 +22,10 @@ public:
     void Activate();
     void Delete();
 
+    void setBool(const std::string &name, bool value);
+    void setInt(const std::string &name, int value);
+    void setFloat(const std::string &name, float value);
+
 private:
     // Checks if the different Shaders have compiled properly
     static void compileErrors(unsigned int shader, GLint type);
