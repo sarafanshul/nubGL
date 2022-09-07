@@ -5,6 +5,7 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <iostream>
+#include "GLError.h"
 
 template<typename T>
 using scope = std::unique_ptr<T>;
@@ -76,6 +77,8 @@ int main(){
         return -1;
     }
 
+    glfwSwapInterval(1); // sync with vSync
+
     glfwMakeContextCurrent(window);
 
     if(!gladLoadGL()){
@@ -126,8 +129,9 @@ void main(){
     std::string fragmentShader = R"(
 #version 330 core
 layout (location = 0) out vec4 color; // rgba
+uniform vec4 u_color;
 void main(){
-    color = vec4(1.0, 0.0, 0.0, 1.0);
+    color = u_color;
 }
 
     )";
@@ -140,8 +144,9 @@ void main(){
         glClear(GL_COLOR_BUFFER_BIT);
 
         glBindVertexArray(vao); // brings back the bound state of others buffers.
+        GLCall(glUniform4f(glGetUniformLocation(shader, "u_color"), 0.8f, 0.3f, 0.8f, 0.1f));
 
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+        GLCall( glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr) );
 
         glfwSwapBuffers(window);
 
