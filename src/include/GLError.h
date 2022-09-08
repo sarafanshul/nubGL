@@ -11,7 +11,7 @@
 
 #define ASSERT(x) if (!(x)) std::raise(SIGKILL)
 
-static const char* glGetErrorString(GLenum error){
+static std::string glGetErrorString(GLenum error){
     switch (error){
         case GL_NO_ERROR:          return "No Error";
         case GL_INVALID_ENUM:      return "Invalid Enum";
@@ -19,7 +19,7 @@ static const char* glGetErrorString(GLenum error){
         case GL_INVALID_OPERATION: return "Invalid Operation";
         case GL_INVALID_FRAMEBUFFER_OPERATION: return "Invalid Framebuffer Operation";
         case GL_OUT_OF_MEMORY:     return "Out of Memory";
-        default:                   return "Unknown Error";
+        default:                   return "Unknown Error : " + std::to_string(error);
     }
 }
 

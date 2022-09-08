@@ -16,14 +16,16 @@ public:
     EBO(GLuint* indices, GLsizeiptr size);
 
     // Binds the EBO
-    void Bind();
+    void Bind() const;
 
     // Unbinds the EBO
-    void Unbind();
+    void Unbind() const;
 
     // Deletes the EBO
 
     void Delete();
+
+    ~EBO();
 };
 
 #endif //OPENGLBASICS_EBO_H

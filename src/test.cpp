@@ -139,12 +139,14 @@ void main(){
     GLuint shader = CreateShader(vertexShader, fragmentShader);
     glUseProgram(shader);
 
+    float r = 0.0f, inc = 0.05;
+
     while ( !glfwWindowShouldClose(window) ){
 
         glClear(GL_COLOR_BUFFER_BIT);
 
         glBindVertexArray(vao); // brings back the bound state of others buffers.
-        GLCall(glUniform4f(glGetUniformLocation(shader, "u_color"), 0.8f, 0.3f, 0.8f, 0.1f));
+        GLCall(glUniform4f(glGetUniformLocation(shader, "u_color"), r, 0.3f, 0.8f, 0.1f));
 
         GLCall( glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr) );
 
@@ -152,6 +154,8 @@ void main(){
 
         glfwPollEvents();
 
+        if(r > 0.9 || r < 0.0) inc = -inc;
+        r += inc;
     }
 
     glDeleteVertexArrays(1, &vao);

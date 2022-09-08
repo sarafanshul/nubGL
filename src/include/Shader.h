@@ -2,8 +2,8 @@
 // Created by Anshul Saraf on 30/08/22.
 //
 
-#ifndef OPENGLBASICS_SHADERCLASS_H
-#define OPENGLBASICS_SHADERCLASS_H
+#ifndef OPENGLBASICS_SHADER_H
+#define OPENGLBASICS_SHADER_H
 
 #include "glad/glad.h"
 #include <string>
@@ -19,12 +19,14 @@ public:
     GLuint ID;
     Shader(const char* vertexFile, const char* fragmentFile);
 
-    void Activate();
+    void Activate() const;
     void Delete();
 
     void setBool(const std::string &name, bool value);
     void setInt(const std::string &name, int value);
     void setFloat(const std::string &name, float value);
+
+    ~Shader();
 
 private:
     // Checks if the different Shaders have compiled properly
@@ -33,4 +35,4 @@ private:
     static GLuint compileShaders(const char* source, GLint type);
 };
 
-#endif //OPENGLBASICS_SHADERCLASS_H
+#endif //OPENGLBASICS_SHADER_H

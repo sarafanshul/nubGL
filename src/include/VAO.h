@@ -19,13 +19,15 @@ public:
     void LinkVBO(VBO& VBO, GLuint layout, GLint numComponents, GLenum type, GLsizei stride, void* offset);
 
     // Binds the VAO
-    void Bind();
+    void Bind() const;
 
     // Unbinds the VAO
-    void Unbind();
+    void Unbind() const;
 
     // Deletes the VAO
     void Delete();
+
+    ~VAO();
 };
 
 #endif //OPENGLBASICS_VAO_H

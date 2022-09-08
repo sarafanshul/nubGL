@@ -9,8 +9,8 @@ add_subdirectory(lib/glad)
 file(GLOB SOURCES CONFIGURE_DEPENDS
         ${PROJECT_SOURCE_DIR}/src/include/*.h
         ${PROJECT_SOURCE_DIR}/src/src/*.cpp
-#        ${PROJECT_SOURCE_DIR}/src/main.cpp
-        ${PROJECT_SOURCE_DIR}/src/test.cpp
+        ${PROJECT_SOURCE_DIR}/src/main.cpp
+#        ${PROJECT_SOURCE_DIR}/src/test.cpp
 )
 
 find_package(OpenGL REQUIRED)

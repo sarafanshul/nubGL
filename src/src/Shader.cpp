@@ -2,13 +2,13 @@
 // Created by Anshul Saraf on 30/08/22.
 //
 
-#include "ShaderClass.h"
+#include "Shader.h"
+#include "GLError.h"
 
 // Reads a text file and outputs a string with everything in the text file
 std::string get_file_contents(const char* filename){
     std::ifstream in(filename, std::ios::binary);
-    if (in)
-    {
+    if (in){
         std::string contents;
         in.seekg(0, std::ios::end);
         contents.resize(in.tellg());
@@ -51,25 +51,25 @@ Shader::Shader(const char* vertexFile, const char* fragmentFile){
 }
 
 // Activates the Shader Program
-void Shader::Activate(){
-    glUseProgram(ID);
+void Shader::Activate() const{
+    GLCall(glUseProgram(ID));
 }
 
 // Deletes the Shader Program
 void Shader::Delete(){
-    glDeleteProgram(ID);
+    GLCall(glDeleteProgram(ID));
 }
 
 void Shader::setBool(const std::string &name, bool value){
-    glUniform1i(glGetUniformLocation(ID, name.c_str()), (int)value);
+    GLCall(glUniform1i(glGetUniformLocation(ID, name.c_str()), (int)value));
 }
 
 void Shader::setInt(const std::string &name, int value){
-    glUniform1i(glGetUniformLocation(ID, name.c_str()), value);
+    GLCall(glUniform1i(glGetUniformLocation(ID, name.c_str()), value));
 }
 
 void Shader::setFloat(const std::string &name, float value){
-    glUniform1f(glGetUniformLocation(ID, name.c_str()), value);
+    GLCall(glUniform1f(glGetUniformLocation(ID, name.c_str()), value));
 }
 
 // Checks if the different Shaders have compiled properly
@@ -103,4 +103,8 @@ GLuint Shader::compileShaders(const char *source, GLint type) {
     // Checks if Shader compiled successfully
     compileErrors(id, type);
     return id;
+}
+
+Shader::~Shader() {
+//    Delete();
 }
