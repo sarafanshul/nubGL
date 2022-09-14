@@ -7,6 +7,7 @@
 #include "VAO.h"
 #include "EBO.h"
 #include "GLError.h"
+#include "GLBufferLayout.h"
 
 /**
  * drawing a quadrilateral using index buffer.
@@ -65,7 +66,7 @@ int main() {
 
     // Specify the viewport of OpenGL in the Window
     // In this case the viewport goes from x = 0, y = 0, to x = 800, y = 800
-//    glViewport(0, 0, 800, 800); // uncomment if output distorted.
+    // glViewport(0, 0, 800, 800);
     { // different scope for our opengl objects
         // Generates Shader object using shaders default.vert and default.frag
         Shader shaderProgram = Shader("Shaders/default.vert", "Shaders/default.frag");
@@ -74,20 +75,22 @@ int main() {
         VAO vao = VAO();
         vao.Bind();
 
-        // Generates Vertex Buffer Object and links it to vertices
+        // Generates Vertex GLBuffer Object and links it to vertices
         VBO vbo = VBO(vertices, sizeof(vertices));
+        GLBufferLayout layout;
+        layout.Push<float>(3);
+        layout.Push<float>(4);
 
-        // Generates Element Buffer Object and links it to indices
+        vao.AddBuffer(vbo, layout);
+
+        // Generates Element GLBuffer Object and links it to indices
         EBO ebo = EBO(indices, sizeof(indices));
-
-        // Links VBO to VAO
-        vao.LinkVBO(vbo, 0, 3, GL_FLOAT, 7 * sizeof(float), (void *) 0); // aPos
-        vao.LinkVBO(vbo, 1, 4, GL_FLOAT, 7 * sizeof(float), (void *) (3 * sizeof(float))); // aColor.
 
         // Unbind all to prevent accidentally modifying them
         vao.Unbind();
         vbo.Unbind();
         ebo.Unbind();
+        shaderProgram.Unbind();
 
         // poll window
         while (!glfwWindowShouldClose(window)) {
@@ -97,7 +100,7 @@ int main() {
             // Clean the back buffer and assign the new color to it
             GLCall(glClear(GL_COLOR_BUFFER_BIT));
             // Tell OpenGL which Shader Program we want to use
-            shaderProgram.Activate();
+            shaderProgram.Bind();
 
             // Assigns a value to the uniform; NOTE: Must always be done after activating the Shader Program
             shaderProgram.setFloat("scale", 1.0f);

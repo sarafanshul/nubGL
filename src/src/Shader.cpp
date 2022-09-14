@@ -51,8 +51,12 @@ Shader::Shader(const char* vertexFile, const char* fragmentFile){
 }
 
 // Activates the Shader Program
-void Shader::Activate() const{
+void Shader::Bind() const{
     GLCall(glUseProgram(ID));
+}
+
+void Shader::Unbind() const {
+    GLCall(glUseProgram(0));
 }
 
 // Deletes the Shader Program
@@ -61,15 +65,32 @@ void Shader::Delete(){
 }
 
 void Shader::setBool(const std::string &name, bool value){
-    GLCall(glUniform1i(glGetUniformLocation(ID, name.c_str()), (int)value));
+    GLCall(glUniform1i(GetUniformLocation(name), (int)value));
 }
 
 void Shader::setInt(const std::string &name, int value){
-    GLCall(glUniform1i(glGetUniformLocation(ID, name.c_str()), value));
+    GLCall(glUniform1i(GetUniformLocation(name), value));
 }
 
 void Shader::setFloat(const std::string &name, float value){
-    GLCall(glUniform1f(glGetUniformLocation(ID, name.c_str()), value));
+    GLCall(glUniform1f(GetUniformLocation(name), value));
+}
+
+void Shader::setFloat4(const std::string &name, float v1, float v2, float v3, float v4) {
+    GLCall(glUniform4f(GetUniformLocation(name), v1, v2, v3, v4));
+
+}
+
+GLuint Shader::GetUniformLocation(const std::string& name) {
+    if( uniformLocationCache.find(name) != uniformLocationCache.end() ) {
+        return uniformLocationCache[name];
+    }
+    GLCall(GLuint location = glGetUniformLocation(ID, name.c_str()));
+    if(location == -1){
+        std::cerr << "Warning: Uniform location -1, name : " + name << std::endl;
+    }
+    uniformLocationCache[name] = location;
+    return location;
 }
 
 // Checks if the different Shaders have compiled properly

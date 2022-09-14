@@ -7,6 +7,8 @@
 
 #include<glad/glad.h>
 #include"VBO.h"
+#include "GLBuffer.h"
+#include "GLBufferLayout.h"
 
 class VAO{
 public:
@@ -15,8 +17,8 @@ public:
     // Constructor that generates a VAO ID
     VAO();
 
-    // Links a VBO to the VAO using a certain layout
-    void LinkVBO(VBO& VBO, GLuint layout, GLint numComponents, GLenum type, GLsizei stride, void* offset);
+    // binds a buffer layout.
+    void AddBuffer(const GLBuffer& xBuffer, const GLBufferLayout& layout);
 
     // Binds the VAO
     void Bind() const;

@@ -6,24 +6,24 @@
 #define OPENGLBASICS_EBO_H
 
 #include<glad/glad.h>
+#include "GLBuffer.h"
 
-class EBO{
+class EBO : public GLBuffer{
 public:
-    // ID reference of Elements Buffer Object
+    // ID reference of Elements GLBuffer Object
     GLuint ID;
 
-    // Constructor that generates an Elements Buffer Object, binds it, and links it to indices
+    // Constructor that generates an Elements GLBuffer Object, binds it, and links it to indices
     EBO(GLuint* indices, GLsizeiptr size);
 
     // Binds the EBO
-    void Bind() const;
+    void Bind() const override;
 
     // Unbinds the EBO
-    void Unbind() const;
+    void Unbind() const override;
 
     // Deletes the EBO
-
-    void Delete();
+    void Delete() override;
 
     ~EBO();
 };

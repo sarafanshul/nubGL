@@ -5,7 +5,7 @@
 #include "EBO.h"
 #include "GLError.h"
 
-// Constructor that generates an Elements Buffer Object, binds it, and links it to indices
+// Constructor that generates an Elements GLBuffer Object, binds it, and links it to indices
 EBO::EBO(GLuint* indices, GLsizeiptr size){
     GLCall(glGenBuffers(1, &ID));
     Bind();

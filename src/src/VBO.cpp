@@ -5,7 +5,7 @@
 #include "VBO.h"
 #include "GLError.h"
 
-// Constructor that generates a Vertex Buffer Object, binds it, and links it to vertices
+// Constructor that generates a Vertex GLBuffer Object, binds it, and links it to vertices
 VBO::VBO(GLfloat* vertices, GLsizeiptr size){
     GLCall(glGenBuffers(1, &ID));
     Bind();

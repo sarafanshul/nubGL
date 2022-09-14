@@ -10,12 +10,18 @@ VAO::VAO(){
     GLCall(glGenVertexArrays(1, &ID));
 }
 
-// Links a VBO to the VAO using a certain layout
-void VAO::LinkVBO(VBO& VBO, GLuint layout, GLint numComponents, GLenum type, GLsizei stride, void* offset){
-    VBO.Bind();
-    GLCall(glVertexAttribPointer(layout, numComponents, type, GL_FALSE, stride, offset));
-    GLCall(glEnableVertexAttribArray(layout));
-    VBO.Unbind();
+void VAO::AddBuffer(const GLBuffer &xBuffer, const GLBufferLayout &layout) {
+    Bind();
+    xBuffer.Bind();
+    const auto& elements = layout.GetElements();
+    uint32_t offset = 0 ;
+    for(uint32_t i = 0 ; i < elements.size() ; i++) {
+        const auto& element = elements[i];
+        GLCall(glEnableVertexAttribArray( i ));
+        GLCall(glVertexAttribPointer(i, element.count, element.type, element.normalized, layout.GetStride(), (const void*)offset));
+        offset += element.count * GLBufferElements::GetSizeOfType(element.type) ;
+    }
+//    xBuffer.Unbind();
 }
 
 // Binds the VAO
@@ -36,3 +42,4 @@ void VAO::Delete(){
 VAO::~VAO() {
 //    Delete();
 }
+
