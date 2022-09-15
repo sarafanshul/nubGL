@@ -78,7 +78,6 @@ void Shader::setFloat(const std::string &name, float value){
 
 void Shader::setFloat4(const std::string &name, float v1, float v2, float v3, float v4) {
     GLCall(glUniform4f(GetUniformLocation(name), v1, v2, v3, v4));
-
 }
 
 GLuint Shader::GetUniformLocation(const std::string& name) {

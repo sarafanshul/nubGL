@@ -2,34 +2,34 @@
 // Created by Anshul Saraf on 30/08/22.
 //
 
-#ifndef OPENGLBASICS_VAO_H
-#define OPENGLBASICS_VAO_H
+#ifndef OPENGLBASICS_VERTEXARRAY_H
+#define OPENGLBASICS_VERTEXARRAY_H
 
 #include<glad/glad.h>
-#include"VBO.h"
+#include"VertexBuffer.h"
 #include "GLBuffer.h"
 #include "GLBufferLayout.h"
 
-class VAO{
+class VertexArray{
 public:
     // ID reference for the Vertex Array Object
     GLuint ID;
-    // Constructor that generates a VAO ID
-    VAO();
+    // Constructor that generates a VertexArray ID
+    VertexArray();
 
     // binds a buffer layout.
     void AddBuffer(const GLBuffer& xBuffer, const GLBufferLayout& layout);
 
-    // Binds the VAO
+    // Binds the VertexArray
     void Bind() const;
 
-    // Unbinds the VAO
+    // Unbinds the VertexArray
     void Unbind() const;
 
-    // Deletes the VAO
+    // Deletes the VertexArray
     void Delete();
 
-    ~VAO();
+    ~VertexArray();
 };
 
-#endif //OPENGLBASICS_VAO_H
+#endif //OPENGLBASICS_VERTEXARRAY_H

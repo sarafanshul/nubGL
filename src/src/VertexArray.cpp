@@ -2,15 +2,15 @@
 // Created by Anshul Saraf on 30/08/22.
 //
 
-#include"VAO.h"
+#include"VertexArray.h"
 #include "GLError.h"
 
-// Constructor that generates a VAO ID
-VAO::VAO(){
+// Constructor that generates a VertexArray ID
+VertexArray::VertexArray(){
     GLCall(glGenVertexArrays(1, &ID));
 }
 
-void VAO::AddBuffer(const GLBuffer &xBuffer, const GLBufferLayout &layout) {
+void VertexArray::AddBuffer(const GLBuffer &xBuffer, const GLBufferLayout &layout) {
     Bind();
     xBuffer.Bind();
     const auto& elements = layout.GetElements();
@@ -24,22 +24,22 @@ void VAO::AddBuffer(const GLBuffer &xBuffer, const GLBufferLayout &layout) {
 //    xBuffer.Unbind();
 }
 
-// Binds the VAO
-void VAO::Bind() const{
+// Binds the VertexArray
+void VertexArray::Bind() const{
     GLCall(glBindVertexArray(ID));
 }
 
-// Unbinds the VAO
-void VAO::Unbind() const{
+// Unbinds the VertexArray
+void VertexArray::Unbind() const{
     GLCall(glBindVertexArray(0));
 }
 
-// Deletes the VAO
-void VAO::Delete(){
+// Deletes the VertexArray
+void VertexArray::Delete(){
     GLCall(glDeleteVertexArrays(1, &ID));
 }
 
-VAO::~VAO() {
+VertexArray::~VertexArray() {
 //    Delete();
 }
 

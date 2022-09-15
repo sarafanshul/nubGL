@@ -4,7 +4,7 @@ layout (location = 1) in vec4 aColor;
 
 out vec4 color; // output color
 
-uniform float scale; // never declare unused uniforms.
+uniform float scale = 1.0; // never declare unused uniforms.
 
 void main(){
     gl_Position = vec4(

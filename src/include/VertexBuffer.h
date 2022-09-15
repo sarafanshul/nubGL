@@ -2,31 +2,31 @@
 // Created by Anshul Saraf on 30/08/22.
 //
 
-#ifndef OPENGLBASICS_VBO_H
-#define OPENGLBASICS_VBO_H
+#ifndef OPENGLBASICS_VERTEXBUFFER_H
+#define OPENGLBASICS_VERTEXBUFFER_H
 
 #include<glad/glad.h>
 #include "GLBuffer.h"
 
-class VBO : public GLBuffer{
+class VertexBuffer : public GLBuffer{
 public:
     // Reference ID of the Vertex GLBuffer Object
     GLuint ID;
 
     // Constructor that generates a Vertex GLBuffer Object, binds it, and links it to vertices
-    VBO(GLfloat* vertices, GLsizeiptr size);
+    VertexBuffer(GLfloat* vertices, GLsizeiptr size);
 
-    // Binds the VBO
+    // Binds the VertexBuffer
     void Bind() const override;
 
-    // Unbinds the VBO
+    // Unbinds the VertexBuffer
     void Unbind() const override;
 
-    // Deletes the VBO
+    // Deletes the VertexBuffer
     void Delete() override;
 
-    ~VBO();
+    ~VertexBuffer();
 };
 
 
-#endif //OPENGLBASICS_VBO_H
+#endif //OPENGLBASICS_VERTEXBUFFER_H

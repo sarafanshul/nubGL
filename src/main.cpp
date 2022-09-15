@@ -3,10 +3,10 @@
 #include "GLFW/glfw3.h"
 
 #include "Shader.h"
-#include "VBO.h"
-#include "VAO.h"
-#include "EBO.h"
-#include "GLError.h"
+#include "VertexBuffer.h"
+#include "VertexArray.h"
+#include "IndexBuffer.h"
+#include "Renderer.h"
 #include "GLBufferLayout.h"
 
 /**
@@ -64,27 +64,26 @@ int main() {
         std::cerr << "Failed to initialize library loader " << std::endl;
     }
 
-    // Specify the viewport of OpenGL in the Window
-    // In this case the viewport goes from x = 0, y = 0, to x = 800, y = 800
     // glViewport(0, 0, 800, 800);
-    { // different scope for our opengl objects
-        // Generates Shader object using shaders default.vert and default.frag
+    // different scope for our opengl objects
+    {
         Shader shaderProgram = Shader("Shaders/default.vert", "Shaders/default.frag");
 
         // Generates Vertex Array/Attribute Object and binds it
-        VAO vao = VAO();
+        VertexArray vao = VertexArray();
         vao.Bind();
 
-        // Generates Vertex GLBuffer Object and links it to vertices
-        VBO vbo = VBO(vertices, sizeof(vertices));
+        // Generates Vertex GLBuffer Object and layouts
+        VertexBuffer vbo = VertexBuffer(vertices, sizeof(vertices));
         GLBufferLayout layout;
         layout.Push<float>(3);
         layout.Push<float>(4);
 
+        // attach buffers to vao
         vao.AddBuffer(vbo, layout);
 
         // Generates Element GLBuffer Object and links it to indices
-        EBO ebo = EBO(indices, sizeof(indices));
+        IndexBuffer ebo = IndexBuffer(indices, sizeof(indices));
 
         // Unbind all to prevent accidentally modifying them
         vao.Unbind();
@@ -92,28 +91,20 @@ int main() {
         ebo.Unbind();
         shaderProgram.Unbind();
 
+        Renderer renderer;
+
         // poll window
         while (!glfwWindowShouldClose(window)) {
 
-            // Specify the color of the background
-            GLCall(glClearColor(0.3f, 0.9f, 0.13f, 0.13f));
-            // Clean the back buffer and assign the new color to it
-            GLCall(glClear(GL_COLOR_BUFFER_BIT));
-            // Tell OpenGL which Shader Program we want to use
-            shaderProgram.Bind();
+//            // Specify the color of the background
+//            GLCall(glClearColor(0.3f, 0.9f, 0.13f, 0.13f));
 
-            // Assigns a value to the uniform; NOTE: Must always be done after activating the Shader Program
-            shaderProgram.setFloat("scale", 1.0f);
+            renderer.Clear();
 
-            // Bind the VAO so OpenGL knows to use it
-            vao.Bind();
-
-            // Draw primitives, number of indices, datatype of indices, index of indices
-            GLCall(glDrawElements(GL_TRIANGLES, sizeof(indices), GL_UNSIGNED_INT, nullptr));
+            renderer.Draw(vao, ebo, shaderProgram);
 
             // Swap the back buffer with the front buffer
             glfwSwapBuffers(window);
-            // Take care of all GLFW events
             glfwPollEvents();
         }
 
@@ -123,9 +114,7 @@ int main() {
         ebo.Delete();
         shaderProgram.Delete();
     }
-    // Delete window before ending the program
     glfwDestroyWindow(window);
-    // Terminate GLFW before ending the program
     glfwTerminate();
     return 0;
 }
