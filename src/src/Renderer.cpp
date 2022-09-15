@@ -4,12 +4,12 @@
 
 #include "Renderer.h"
 
-void Renderer::Clear() const{
+void Renderer::Clear() const {
     // Clean the back buffer and assign the new color to it
     GLCall(glClear(GL_COLOR_BUFFER_BIT));
 }
 
-void Renderer::Draw(const VertexArray &vao, const IndexBuffer &ebo, const Shader &shader) const {
+void Renderer::Draw(const VertexArray& vao, const IndexBuffer& ebo, const Shader& shader) const {
     // Tell OpenGL which Shader Program we want to use
     shader.Bind();
     // Bind the VertexArray so OpenGL knows to use it

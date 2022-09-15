@@ -5,7 +5,7 @@
 #ifndef OPENGLBASICS_GLBUFFER_H
 #define OPENGLBASICS_GLBUFFER_H
 
-class GLBuffer{
+class GLBuffer {
 public:
     // Binds THe GLBuffer
     virtual void Bind() const = 0;

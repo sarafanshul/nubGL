@@ -8,7 +8,7 @@
 #include<glad/glad.h>
 #include "GLBuffer.h"
 
-class VertexBuffer : public GLBuffer{
+class VertexBuffer : public GLBuffer {
 public:
     // Reference ID of the Vertex GLBuffer Object
     GLuint ID;

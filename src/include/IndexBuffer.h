@@ -8,7 +8,7 @@
 #include<glad/glad.h>
 #include "GLBuffer.h"
 
-class IndexBuffer : public GLBuffer{
+class IndexBuffer : public GLBuffer {
 public:
     // ID reference of Elements GLBuffer Object
     GLuint ID;
@@ -25,7 +25,7 @@ public:
     // Deletes the IndexBuffer
     void Delete() override;
 
-    uint32_t GetCount() const ;
+    uint32_t GetCount() const;
 
     ~IndexBuffer();
 

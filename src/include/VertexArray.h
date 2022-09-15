@@ -10,10 +10,11 @@
 #include "GLBuffer.h"
 #include "GLBufferLayout.h"
 
-class VertexArray{
+class VertexArray {
 public:
     // ID reference for the Vertex Array Object
     GLuint ID;
+
     // Constructor that generates a VertexArray ID
     VertexArray();
 

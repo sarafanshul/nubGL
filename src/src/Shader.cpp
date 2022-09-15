@@ -6,22 +6,22 @@
 #include "GLError.h"
 
 // Reads a text file and outputs a string with everything in the text file
-std::string get_file_contents(const char* filename){
+std::string get_file_contents(const char* filename) {
     std::ifstream in(filename, std::ios::binary);
-    if (in){
+    if ( in ) {
         std::string contents;
         in.seekg(0, std::ios::end);
         contents.resize(in.tellg());
         in.seekg(0, std::ios::beg);
-        in.read(&contents[0], contents.size());
+        in.read(&contents[ 0 ], contents.size());
         in.close();
-        return(contents);
+        return (contents);
     }
-    throw(errno);
+    throw (errno);
 }
 
 // Constructor that build the Shader Program from 2 different shaders
-Shader::Shader(const char* vertexFile, const char* fragmentFile){
+Shader::Shader(const char* vertexFile, const char* fragmentFile) {
 
     // Read vertexFile and fragmentFile and store the strings
     std::string vertexCode = get_file_contents(vertexFile);
@@ -51,7 +51,7 @@ Shader::Shader(const char* vertexFile, const char* fragmentFile){
 }
 
 // Activates the Shader Program
-void Shader::Bind() const{
+void Shader::Bind() const {
     GLCall(glUseProgram(ID));
 }
 
@@ -60,35 +60,35 @@ void Shader::Unbind() const {
 }
 
 // Deletes the Shader Program
-void Shader::Delete(){
+void Shader::Delete() {
     GLCall(glDeleteProgram(ID));
 }
 
-void Shader::setBool(const std::string &name, bool value){
-    GLCall(glUniform1i(GetUniformLocation(name), (int)value));
+void Shader::setBool(const std::string& name, bool value) {
+    GLCall(glUniform1i(GetUniformLocation(name), (int) value));
 }
 
-void Shader::setInt(const std::string &name, int value){
+void Shader::setInt(const std::string& name, int value) {
     GLCall(glUniform1i(GetUniformLocation(name), value));
 }
 
-void Shader::setFloat(const std::string &name, float value){
+void Shader::setFloat(const std::string& name, float value) {
     GLCall(glUniform1f(GetUniformLocation(name), value));
 }
 
-void Shader::setFloat4(const std::string &name, float v1, float v2, float v3, float v4) {
+void Shader::setFloat4(const std::string& name, float v1, float v2, float v3, float v4) {
     GLCall(glUniform4f(GetUniformLocation(name), v1, v2, v3, v4));
 }
 
 GLuint Shader::GetUniformLocation(const std::string& name) {
-    if( uniformLocationCache.find(name) != uniformLocationCache.end() ) {
-        return uniformLocationCache[name];
+    if ( uniformLocationCache.find(name) != uniformLocationCache.end()) {
+        return uniformLocationCache[ name ];
     }
     GLCall(GLuint location = glGetUniformLocation(ID, name.c_str()));
-    if(location == -1){
+    if ( location == -1 ) {
         std::cerr << "Warning: Uniform location -1, name : " + name << std::endl;
     }
-    uniformLocationCache[name] = location;
+    uniformLocationCache[ name ] = location;
     return location;
 }
 
@@ -98,22 +98,24 @@ void Shader::compileErrors(unsigned int shader, GLint type) {
     GLint hasCompiled;
     // Character array to store error message in
     char infoLog[1024];
-    if (type == GL_VERTEX_SHADER || type == GL_FRAGMENT_SHADER) {
+    if ( type == GL_VERTEX_SHADER || type == GL_FRAGMENT_SHADER ) {
         glGetShaderiv(shader, GL_COMPILE_STATUS, &hasCompiled);
-        if (hasCompiled == GL_FALSE) {
+        if ( hasCompiled == GL_FALSE ) {
             glGetShaderInfoLog(shader, 1024, NULL, infoLog);
-            std::cout << "SHADER_COMPILATION_ERROR for:" << ((type == GL_VERTEX_SHADER) ? "Vertex Shader" : "Fragment Shader" ) << "\n" << infoLog << std::endl;
+            std::cout << "SHADER_COMPILATION_ERROR for:"
+                      << ((type == GL_VERTEX_SHADER) ? "Vertex Shader" : "Fragment Shader") << "\n" << infoLog
+                      << std::endl;
         }
     } else {
         glGetProgramiv(shader, GL_LINK_STATUS, &hasCompiled);
-        if (hasCompiled == GL_FALSE) {
+        if ( hasCompiled == GL_FALSE ) {
             glGetProgramInfoLog(shader, 1024, NULL, infoLog);
             std::cout << "SHADER_LINKING_ERROR for:" << "PROGRAM" << "\n" << infoLog << std::endl;
         }
     }
 }
 
-GLuint Shader::compileShaders(const char *source, GLint type) {
+GLuint Shader::compileShaders(const char* source, GLint type) {
     // Create Shader Object and get its reference
     GLuint id = glCreateShader(type);
     // Attach Shader source to the Shader Object

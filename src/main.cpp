@@ -20,12 +20,12 @@
  *         1       2
  *
  */
-GLfloat vertices[] ={
+GLfloat vertices[] = {
         //   x         y       z             r         g         b         a
-        -0.5, -0.5, 0.0,    0.3f, 0.3f, 0.7f, 0.5f,     // bottom left
-        0.5, -0.5, 0.0,    0.8f, 0.3f, 0.2f, 0.5f,   // bottom right
-        0.5, 0.5, 0.0,   0.9f, 0.0f, 0.0f, 0.5f,  // top right
-        -0.5, 0.5, 0.0,  0.8f, 0.3f, 0.2f, 1.0f, // top left
+        -0.5, -0.5, 0.0, 0.3f, 0.3f, 0.7f, 0.5f,     // bottom left
+        0.5, -0.5, 0.0, 0.8f, 0.3f, 0.2f, 0.5f,   // bottom right
+        0.5, 0.5, 0.0, 0.9f, 0.0f, 0.0f, 0.5f,  // top right
+        -0.5, 0.5, 0.0, 0.8f, 0.3f, 0.2f, 1.0f, // top left
 };
 
 GLuint indices[] = {
@@ -47,10 +47,10 @@ int main() {
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
     // Create a GLFW window object of 800 by 800 pixels, naming it "TestOpenGL"
-    GLFWwindow *window = glfwCreateWindow(800, 800, "TestOpenGL", nullptr, nullptr);
+    GLFWwindow* window = glfwCreateWindow(800, 800, "TestOpenGL", nullptr, nullptr);
 
     // Error check if the window fails to create
-    if (!window) {
+    if ( !window ) {
         std::cout << "Unable to create window :(\n";
         glfwTerminate();
         return -1;
@@ -60,7 +60,7 @@ int main() {
     glfwMakeContextCurrent(window);
 
     // Load GLAD so it configures OpenGL
-    if (!gladLoadGL()) {
+    if ( !gladLoadGL()) {
         std::cerr << "Failed to initialize library loader " << std::endl;
     }
 
