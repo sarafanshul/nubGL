@@ -64,19 +64,19 @@ void Shader::Delete() {
     GLCall(glDeleteProgram(ID));
 }
 
-void Shader::setBool(const std::string& name, bool value) {
+[[maybe_unused]] void Shader::setBool(const std::string& name, bool value) {
     GLCall(glUniform1i(GetUniformLocation(name), (int) value));
 }
 
-void Shader::setInt(const std::string& name, int value) {
+[[maybe_unused]] void Shader::setInt(const std::string& name, int value) {
     GLCall(glUniform1i(GetUniformLocation(name), value));
 }
 
-void Shader::setFloat(const std::string& name, float value) {
+[[maybe_unused]] void Shader::setFloat(const std::string& name, float value) {
     GLCall(glUniform1f(GetUniformLocation(name), value));
 }
 
-void Shader::setFloat4(const std::string& name, float v1, float v2, float v3, float v4) {
+[[maybe_unused]] void Shader::setFloat4(const std::string& name, float v1, float v2, float v3, float v4) {
     GLCall(glUniform4f(GetUniformLocation(name), v1, v2, v3, v4));
 }
 
@@ -84,7 +84,7 @@ GLuint Shader::GetUniformLocation(const std::string& name) {
     if ( uniformLocationCache.find(name) != uniformLocationCache.end()) {
         return uniformLocationCache[ name ];
     }
-    GLCall(GLuint location = glGetUniformLocation(ID, name.c_str()));
+    GLCall(GLint location = glGetUniformLocation(ID, name.c_str()));
     if ( location == -1 ) {
         std::cerr << "Warning: Uniform location -1, name : " + name << std::endl;
     }

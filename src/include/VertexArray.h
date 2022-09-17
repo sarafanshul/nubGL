@@ -12,9 +12,6 @@
 
 class VertexArray {
 public:
-    // ID reference for the Vertex Array Object
-    GLuint ID;
-
     // Constructor that generates a VertexArray ID
     VertexArray();
 
@@ -31,6 +28,10 @@ public:
     void Delete();
 
     ~VertexArray();
+
+private:
+    // ID reference for the Vertex Array Object
+    GLuint ID;
 };
 
 #endif //OPENGLBASICS_VERTEXARRAY_H

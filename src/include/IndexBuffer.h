@@ -10,9 +10,6 @@
 
 class IndexBuffer : public GLBuffer {
 public:
-    // ID reference of Elements GLBuffer Object
-    GLuint ID;
-
     // Constructor that generates an Elements GLBuffer Object, binds it, and links it to indices
     IndexBuffer(GLuint* indices, GLsizeiptr size);
 
@@ -25,11 +22,13 @@ public:
     // Deletes the IndexBuffer
     void Delete() override;
 
-    uint32_t GetCount() const;
+    [[nodiscard]] uint32_t GetCount() const;
 
     ~IndexBuffer();
 
 private:
+    // ID reference of Elements GLBuffer Object
+    GLuint ID;
     uint32_t m_Count;
 };
 

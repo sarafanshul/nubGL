@@ -10,9 +10,6 @@
 
 class VertexBuffer : public GLBuffer {
 public:
-    // Reference ID of the Vertex GLBuffer Object
-    GLuint ID;
-
     // Constructor that generates a Vertex GLBuffer Object, binds it, and links it to vertices
     VertexBuffer(GLfloat* vertices, GLsizeiptr size);
 
@@ -26,6 +23,10 @@ public:
     void Delete() override;
 
     ~VertexBuffer();
+
+private:
+    // Reference ID of the Vertex GLBuffer Object
+    GLuint ID;
 };
 
 

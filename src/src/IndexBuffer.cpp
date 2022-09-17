@@ -8,7 +8,6 @@
 // Constructor that generates an Elements GLBuffer Object, binds it, and links it to indices
 IndexBuffer::IndexBuffer(GLuint* indices, GLsizeiptr size) {
     m_Count = size / sizeof(indices[ 0 ]);
-    std::cout << m_Count;
     GLCall(glGenBuffers(1, &ID));
     Bind();
     GLCall(glBufferData(GL_ELEMENT_ARRAY_BUFFER, size, indices, GL_STATIC_DRAW));
