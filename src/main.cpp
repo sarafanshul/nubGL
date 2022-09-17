@@ -8,6 +8,7 @@
 #include "IndexBuffer.h"
 #include "Renderer.h"
 #include "GLBufferLayout.h"
+#include "Texture.h"
 
 /**
  * drawing a quadrilateral using index buffer.
@@ -21,12 +22,13 @@
  *
  */
 GLfloat vertices[] = {
-        //   x         y       z             r         g         b         a
-        -0.5, -0.5, 0.0, 0.3f, 0.3f, 0.7f, 0.5f,     // bottom left
-        0.5, -0.5, 0.0, 0.8f, 0.3f, 0.2f, 0.5f,   // bottom right
-        0.5, 0.5, 0.0, 0.9f, 0.0f, 0.0f, 0.5f,  // top right
-        -0.5, 0.5, 0.0, 0.8f, 0.3f, 0.2f, 1.0f, // top left
+//        x      y     z        r      g      b     a        t_x   t_y
+        -0.5,  -0.5,  0.0,    0.3f,  0.3f,  0.7f,  0.5f,    0.0f,  0.0f,    // bottom left
+         0.5,  -0.5,  0.0,    0.8f,  0.3f,  0.2f,  0.5f,    1.0f,  0.0f,    // bottom right
+         0.5,   0.5,  0.0,    0.9f,  0.0f,  0.0f,  0.5f,    1.0f,  1.0f,    // top right
+        -0.5,   0.5,  0.0,    0.8f,  0.3f,  0.2f,  1.0f,    0.0f,  1.0f,    // top left
 };
+// Texture2D coordinates range from 0 to 1 in the x and y-axis
 
 GLuint indices[] = {
         0, 1, 3,
@@ -78,6 +80,7 @@ int main() {
         GLBufferLayout layout;
         layout.Push<float>(3);
         layout.Push<float>(4);
+        layout.Push<float>(2);
 
         // attach buffers to vao
         vao.AddBuffer(vbo, layout);
@@ -85,20 +88,26 @@ int main() {
         // Generates Element GLBuffer Object and links it to indices
         IndexBuffer ebo = IndexBuffer(indices, sizeof(indices));
 
+        Texture texture = Texture("Textures/op.jpeg");
+        int slot = 0;
+        texture.Bind(slot);
+        shaderProgram.Bind();
+        shaderProgram.setInt("u_Texture", slot);
+
         // Unbind all to prevent accidentally modifying them
         vao.Unbind();
         vbo.Unbind();
         ebo.Unbind();
+//        texture.Unbind();
         shaderProgram.Unbind();
 
         Renderer renderer;
 
+        // Specify the color of the background
+        GLCall(glClearColor(0.3f, 0.9f, 0.13f, 0.13f));
+
         // poll window
         while (!glfwWindowShouldClose(window)) {
-
-//            // Specify the color of the background
-//            GLCall(glClearColor(0.3f, 0.9f, 0.13f, 0.13f));
-
             renderer.Clear();
 
             renderer.Draw(vao, ebo, shaderProgram);
