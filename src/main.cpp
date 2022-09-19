@@ -91,17 +91,24 @@ int main() {
         // Generates Element GLBuffer Object and links it to indices
         IndexBuffer ebo = IndexBuffer(indices, sizeof(indices));
 
-        Texture texture = Texture("Textures/alpha_image.png");
-        int slot = 0;
-        texture.Bind(slot);
+        Texture texture0 = Texture("Textures/alpha_image.png");
+        int slot0 = 0;
+        texture0.Bind(slot0);
         shaderProgram.Bind();
-        shaderProgram.setInt("u_Texture", slot);
+        shaderProgram.setInt("u_Texture0", slot0);
+
+        Texture texture1 = Texture("Textures/lawn_alpha.png");
+        int slot1 = 1;
+        texture1.Bind(slot1);
+        shaderProgram.Bind();
+        shaderProgram.setInt("u_Texture1", slot1);
 
         // Unbind all to prevent accidentally modifying them
         vao.Unbind();
         vbo.Unbind();
         ebo.Unbind();
-        texture.Unbind();
+        texture0.Unbind();
+        texture1.Unbind();
         shaderProgram.Unbind();
 
         Renderer renderer;
@@ -113,7 +120,8 @@ int main() {
         while (!glfwWindowShouldClose(window)) {
             renderer.Clear();
 
-            texture.Bind(slot);
+            texture0.Bind(slot0);
+            texture1.Bind(slot1);
             renderer.Draw(vao, ebo, shaderProgram);
 
             // Swap the back buffer with the front buffer
