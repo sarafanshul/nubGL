@@ -33,9 +33,14 @@ Texture::Texture(const std::string& path, uint32_t flip) :
      * so you could for example use nearest neighbor filtering when textures are scaled downwards
      * and linear filtering for upscaled textures.
      * We thus have to specify the filtering method for both options via glTexParameter*.
+     *
+     * A common mistake is to set one of the mipmap filtering options as the **magnification filter**.
+     * This doesn't have any effect since mipmaps are primarily used for when textures get downscaled:
+     *  texture magnification doesn't use mipmaps and giving it a mipmap filtering option will generate
+     *  an OpenGL GL_INVALID_ENUM error code.
      * */
-    GLCall( glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR         ) );
-    GLCall( glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR         ) );
+    GLCall( glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR   ) );
+    GLCall( glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR                 ) );
 
     // Texture wrapping
     /* GL_REPEAT: The default behavior for textures. Repeats the texture image.
@@ -52,6 +57,8 @@ Texture::Texture(const std::string& path, uint32_t flip) :
 
     // specify a two-dimensional texture image https://docs.gl/gl4/glTexImage2D
     GLCall( glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, m_Width, m_Height, 0, GL_RGBA, GL_UNSIGNED_BYTE, m_LocalBuffer ) );
+
+    GLCall( glGenerateMipmap(GL_TEXTURE_2D) );
 
     // unbind the texture.
     GLCall( glBindTexture(GL_TEXTURE_2D, 0) );

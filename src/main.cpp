@@ -71,6 +71,9 @@ int main() {
     {
         Shader shaderProgram = Shader("Shaders/default.vert", "Shaders/default.frag");
 
+        GLCall( glEnable(GL_BLEND) );
+        GLCall( glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA) );
+
         // Generates Vertex Array/Attribute Object and binds it
         VertexArray vao = VertexArray();
         vao.Bind();
@@ -88,7 +91,7 @@ int main() {
         // Generates Element GLBuffer Object and links it to indices
         IndexBuffer ebo = IndexBuffer(indices, sizeof(indices));
 
-        Texture texture = Texture("Textures/op.jpeg");
+        Texture texture = Texture("Textures/alpha_image.png");
         int slot = 0;
         texture.Bind(slot);
         shaderProgram.Bind();
@@ -98,18 +101,19 @@ int main() {
         vao.Unbind();
         vbo.Unbind();
         ebo.Unbind();
-//        texture.Unbind();
+        texture.Unbind();
         shaderProgram.Unbind();
 
         Renderer renderer;
 
         // Specify the color of the background
-        GLCall(glClearColor(0.3f, 0.9f, 0.13f, 0.13f));
+        GLCall(glClearColor(0.5f, 0.7f, 0.7f, 0.13f));
 
         // poll window
         while (!glfwWindowShouldClose(window)) {
             renderer.Clear();
 
+            texture.Bind(slot);
             renderer.Draw(vao, ebo, shaderProgram);
 
             // Swap the back buffer with the front buffer
