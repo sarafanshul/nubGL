@@ -80,6 +80,10 @@ void Shader::Delete() {
     GLCall(glUniform4f(GetUniformLocation(name), v1, v2, v3, v4));
 }
 
+[[maybe_unused]] void Shader::setUniformMat4f(const std::string& name, const glm::mat4& matrix) {
+    GLCall(glUniformMatrix4fv(GetUniformLocation(name), 1, GL_FALSE, &matrix[0][0]));
+}
+
 GLuint Shader::GetUniformLocation(const std::string& name) {
     if ( uniformLocationCache.find(name) != uniformLocationCache.end()) {
         return uniformLocationCache[ name ];

@@ -7,9 +7,10 @@ out vec4 color; // output color
 out vec2 v_TexCoord;// texture coordinates-out
 
 uniform float scale = 1.0; // never declare unused uniforms.
+uniform mat4 u_MVP; // model view projection matrix
 
 void main(){
-    gl_Position = vec4(
+    gl_Position = u_MVP * vec4(
         aPos.x * scale,
         aPos.y * scale,
         aPos.z * scale,

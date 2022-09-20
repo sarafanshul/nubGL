@@ -1,6 +1,9 @@
 #include <iostream>
 #include "glad/glad.h"
 #include "GLFW/glfw3.h"
+#include "glm/glm.hpp"
+#include "glm/gtc/matrix_transform.hpp"
+
 
 #include "Shader.h"
 #include "VertexBuffer.h"
@@ -31,8 +34,8 @@ GLfloat vertices[] = {
 // Texture2D coordinates range from 0 to 1 in the x and y-axis
 
 GLuint indices[] = {
-        0, 1, 3,
-        1, 3, 2
+        0, 1, 3, // first  triangle
+        1, 3, 2 //  second triangle
 };
 
 int main() {
@@ -49,7 +52,8 @@ int main() {
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
     // Create a GLFW window object of 800 by 800 pixels, naming it "TestOpenGL"
-    GLFWwindow* window = glfwCreateWindow(800, 800, "TestOpenGL", nullptr, nullptr);
+    const int w_Width = 16 * 50  , w_Height = 12 * 50 ;
+    GLFWwindow* window = glfwCreateWindow(w_Width, w_Height, "TestOpenGL", nullptr, nullptr);
 
     // Error check if the window fails to create
     if ( !window ) {
@@ -66,11 +70,13 @@ int main() {
         std::cerr << "Failed to initialize library loader " << std::endl;
     }
 
-    // glViewport(0, 0, 800, 800);
-    // different scope for our opengl objects
-    {
+    { // different scope for our opengl objects
+        glm::mat4 proj = glm::ortho(-1.0f, 1.0f, -(float)w_Height/w_Width, (float)w_Height/w_Width, -1.0f, 1.0f); // 9 : 16 ar
         Shader shaderProgram = Shader("Shaders/default.vert", "Shaders/default.frag");
+        shaderProgram.Bind();
+        shaderProgram.setUniformMat4f("u_MVP", proj);
 
+        // set blinding params
         GLCall( glEnable(GL_BLEND) );
         GLCall( glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA) );
 

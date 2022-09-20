@@ -20,6 +20,7 @@ include_directories(
         ${OPENGL_INCLUDE_DIRS}
         ${GLUT_INCLUDE_DIRS}
         ${PROJECT_SOURCE_DIR}/lib/stb_image
+        ${PROJECT_SOURCE_DIR}/lib/glm
         src/include
 )
 

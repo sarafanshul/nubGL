@@ -12,6 +12,7 @@
 #include <iostream>
 #include <cerrno>
 #include <unordered_map>
+#include "glm/glm.hpp"
 
 std::string get_file_contents(const char* filename);
 
@@ -33,6 +34,8 @@ public:
     [[maybe_unused]] void setFloat(const std::string& name, float value);
 
     [[maybe_unused]] void setFloat4(const std::string& name, float v1, float v2, float v3, float v4);
+
+    [[maybe_unused]] void setUniformMat4f(const std::string& name, const glm::mat4& matrix);
 
     ~Shader();
 
