@@ -71,10 +71,16 @@ int main() {
     }
 
     { // different scope for our opengl objects
-        glm::mat4 proj = glm::ortho(-1.0f, 1.0f, -(float)w_Height/w_Width, (float)w_Height/w_Width, -1.0f, 1.0f); // 9 : 16 ar
+//        glm::mat4 proj = glm::ortho(-1.0f, 1.0f, -(float)w_Height/w_Width, (float)w_Height/w_Width, -1.0f, 1.0f); // 9 : 16 ar
+        glm::mat4 proj = glm::ortho(-(float)w_Width/2, (float)w_Width/2, -(float)w_Height/2, (float)w_Height/2, -1.0f, 1.0f); // projection
+        glm::mat4 view = glm::translate(glm::mat4(1.0f), glm::vec3(0, 0, 0)); // camera
+        glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(0, 0, 0)); // transform
+//        glm::mat4 mvp = proj * view * model;
+
         Shader shaderProgram = Shader("Shaders/default.vert", "Shaders/default.frag");
-        shaderProgram.Bind();
-        shaderProgram.setUniformMat4f("u_MVP", proj);
+//        shaderProgram.Bind();
+//        shaderProgram.setUniformMat4f("u_MVP", mvp);
+//        shaderProgram.setFloat("scale", (float)w_Width/2);
 
         // set blinding params
         GLCall( glEnable(GL_BLEND) );
@@ -123,8 +129,24 @@ int main() {
         GLCall(glClearColor(0.5f, 0.7f, 0.7f, 0.13f));
 
         // poll window
+        float x = 0, px = 1, y = 0, py = 1;
         while (!glfwWindowShouldClose(window)) {
             renderer.Clear();
+
+            if( y > 100 )py = -1, px = px;
+            if( y < -100 )py = 1, px = -px;
+
+//            if( x > 100 )px = -px;
+//            if( x < -100 )px = px;
+
+            x += px * 1;
+            y += py * 1;
+
+            model = glm::translate(glm::mat4(1.0f), glm::vec3(x-100, y, 0));
+            shaderProgram.Bind();
+            glm::mat4 mvp = proj * view * model;
+            shaderProgram.setUniformMat4f("u_MVP", mvp);
+            shaderProgram.setFloat("scale", (float)w_Width/2);
 
             texture0.Bind(slot0);
             texture1.Bind(slot1);
