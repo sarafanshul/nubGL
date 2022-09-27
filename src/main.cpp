@@ -72,15 +72,11 @@ int main() {
 
     { // different scope for our opengl objects
         glm::mat4 proj = glm::ortho(-1.0f, 1.0f, -(float)w_Height/w_Width, (float)w_Height/w_Width, -1.0f, 1.0f); // 9 : 16 A_R
-//        glm::mat4 proj = glm::ortho(-(float)w_Width/2, (float)w_Width/2, -(float)w_Height/2, (float)w_Height/2, -1.0f, 1.0f); // projection
         glm::mat4 view = glm::translate(glm::mat4(1.0f), glm::vec3(0, 0, 0)); // camera
 //        glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(0, 0, 0)); // transform
 //        glm::mat4 mvp = proj * view * model;
 
         Shader shaderProgram = Shader("Shaders/default.vert", "Shaders/default.frag");
-//        shaderProgram.Bind();
-//        shaderProgram.setUniformMat4f("u_MVP", mvp);
-//        shaderProgram.setFloat("scale", (float)w_Width/2);
 
         // set blinding params
         GLCall( glEnable(GL_BLEND) );
