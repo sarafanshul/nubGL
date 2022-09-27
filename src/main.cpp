@@ -52,7 +52,7 @@ int main() {
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
     // Create a GLFW window object of 800 by 800 pixels, naming it "TestOpenGL"
-    const int w_Width = 16 * 50  , w_Height = 12 * 50 ;
+    const int w_Width = 16 * 60  , w_Height = 9 * 60 ;
     GLFWwindow* window = glfwCreateWindow(w_Width, w_Height, "TestOpenGL", nullptr, nullptr);
 
     // Error check if the window fails to create
@@ -72,15 +72,9 @@ int main() {
 
     { // different scope for our opengl objects
         glm::mat4 proj = glm::ortho(-1.0f, 1.0f, -(float)w_Height/w_Width, (float)w_Height/w_Width, -1.0f, 1.0f); // 9 : 16 A_R
-//        glm::mat4 proj = glm::ortho(-(float)w_Width/2, (float)w_Width/2, -(float)w_Height/2, (float)w_Height/2, -1.0f, 1.0f); // projection
         glm::mat4 view = glm::translate(glm::mat4(1.0f), glm::vec3(0, 0, 0)); // camera
-//        glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(0, 0, 0)); // transform
-//        glm::mat4 mvp = proj * view * model;
 
         Shader shaderProgram = Shader("Shaders/default.vert", "Shaders/default.frag");
-//        shaderProgram.Bind();
-//        shaderProgram.setUniformMat4f("u_MVP", mvp);
-//        shaderProgram.setFloat("scale", (float)w_Width/2);
 
         // set blinding params
         GLCall( glEnable(GL_BLEND) );
@@ -103,51 +97,62 @@ int main() {
         // Generates Element GLBuffer Object and links it to indices
         IndexBuffer ebo = IndexBuffer(indices, sizeof(indices));
 
-        Texture texture0 = Texture("Textures/alpha_image.png");
+        Texture texture0 = Texture("Textures/dvd.png");
         int slot0 = 0;
         texture0.Bind(slot0);
         shaderProgram.Bind();
         shaderProgram.setInt("u_Texture0", slot0);
-
-        Texture texture1 = Texture("Textures/lawn_alpha.png");
-        int slot1 = 1;
-        texture1.Bind(slot1);
-        shaderProgram.Bind();
-        shaderProgram.setInt("u_Texture1", slot1);
 
         // Unbind all to prevent accidentally modifying them
         vao.Unbind();
         vbo.Unbind();
         ebo.Unbind();
         texture0.Unbind();
-        texture1.Unbind();
         shaderProgram.Unbind();
 
         Renderer renderer;
 
         // Specify the color of the background
-        GLCall(glClearColor(0.5f, 0.7f, 0.7f, 0.13f));
+        GLCall(glClearColor(0.1f, 0.1f, 0.1f, 0.8f));
 
-        // poll window
-
-        float delta = 0.0075, sx = 1, sy = 1;
-        float scale = 0.4;
+        float delta = 0.0075, sx = 1, sy = 1; // starting params
+        float scale = 0.3; // scale of texture
         float texture_boundary = 0.5f * scale; // texture size size * scale;
+        glm::vec3 color(1, 1, 1); // starting color
+
+        srand(static_cast <unsigned> (time(0)));
+        auto randomize_color = [&](glm::vec3& col) -> void {
+            float r = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+            col[ 0 ] = r;
+            r = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+            col[ 1 ] = r;
+            r = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+            col[ 2 ] = r;
+        };
+
         auto update = [&](float& x, float& y) -> void{
             float y_max = (float)w_Height/w_Width;
             float y_min = -(float)w_Height/w_Width;
             float x_max = 1 ;
             float x_min = -1;
 
-            if( y + texture_boundary >= y_max )
+            if( y + texture_boundary >= y_max ) {
                 sy = -1;
-            if( y - texture_boundary <= y_min )
+                randomize_color(color);
+            }
+            if( y - texture_boundary <= y_min ) {
                 sy = 1;
+                randomize_color(color);
+            }
 
-            if( x + texture_boundary >= x_max )
+            if( x + texture_boundary >= x_max ) {
                 sx = -1;
-            if( x - texture_boundary <= x_min )
+                randomize_color(color);
+            }
+            if( x - texture_boundary <= x_min ) {
                 sx = 1;
+                randomize_color(color);
+            }
 
             x += sx*delta;
             y += sy*delta;
@@ -164,9 +169,9 @@ int main() {
             glm::mat4 mvp = proj * view * model;
             shaderProgram.setUniformMat4f("u_MVP", mvp);
             shaderProgram.setFloat("scale", scale);
+            shaderProgram.setFloat4("t0_Color", color.x, color.y, color.z, 1.0);
 
             texture0.Bind(slot0);
-            texture1.Bind(slot1);
             renderer.Draw(vao, ebo, shaderProgram);
 
             // Swap the back buffer with the front buffer
