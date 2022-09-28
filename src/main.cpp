@@ -126,44 +126,68 @@ int main() {
 
         // poll window
 
-        float delta = 0.0075, sx = 1, sy = 1;
+        float delta = 0.0075, sx = 5, sy = 5;
         float scale = 0.4;
         float texture_boundary = 0.5f * scale; // texture size size * scale;
-        auto update = [&](float& x, float& y) -> void{
+        auto update = [&](float& x, float& y, float& a) -> void{
             float y_max = (float)w_Height/w_Width;
             float y_min = -(float)w_Height/w_Width;
             float x_max = 1 ;
             float x_min = -1;
 
             if( y + texture_boundary >= y_max )
-                sy = -1;
+                sy = -sy;
             if( y - texture_boundary <= y_min )
-                sy = 1;
+                sy = -sy;
 
             if( x + texture_boundary >= x_max )
-                sx = -1;
+                sx = -sx;
             if( x - texture_boundary <= x_min )
-                sx = 1;
+                sx = -sx;
 
             x += sx*delta;
             y += sy*delta;
+            a ++ ;
+
+            if( sx > 0 ) sx -= 0.01;
+            else sx += 0.01;
+            if( sy > 0 ) sy -= 0.01;
+            else sy += 0.01;
         };
 
-        float x = 0, y = 0; // starting coords
+        float x = 0, y = 0, angle = 0; // starting coords
         while (!glfwWindowShouldClose(window)) {
             renderer.Clear();
 
-            update(x, y);
+            update(x, y, angle);
 
-            glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(x, y, 0));
-            shaderProgram.Bind();
-            glm::mat4 mvp = proj * view * model;
-            shaderProgram.setUniformMat4f("u_MVP", mvp);
-            shaderProgram.setFloat("scale", scale);
+            {
+                glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(x, y, 0));
+                glm::mat4 rot = glm::rotate(model, glm::radians(angle), glm::vec3(0, 0, 1));
+                glm::mat4 mvp = proj * view * rot;
 
-            texture0.Bind(slot0);
-            texture1.Bind(slot1);
-            renderer.Draw(vao, ebo, shaderProgram);
+                shaderProgram.Bind();
+                shaderProgram.setUniformMat4f("u_MVP", mvp);
+                shaderProgram.setFloat("scale", scale);
+                texture0.Bind(slot0);
+                texture1.Bind(slot1);
+
+                renderer.Draw(vao, ebo, shaderProgram);
+            }
+
+            {
+                glm::mat4 model2 = glm::translate(glm::mat4(1.0f), glm::vec3(0, (w_Width/w_Height)/2, 0));
+                glm::mat4 rot = glm::rotate(model2, glm::radians(angle), glm::vec3(0, 1, 1));
+                glm::mat4 mvp = proj * view * rot;
+
+                shaderProgram.Bind();
+                shaderProgram.setUniformMat4f("u_MVP", mvp);
+                shaderProgram.setFloat("scale", scale);
+                texture0.Bind(slot0);
+                texture1.Bind(slot1);
+
+                renderer.Draw(vao, ebo, shaderProgram);
+            }
 
             // Swap the back buffer with the front buffer
             glfwSwapBuffers(window);
