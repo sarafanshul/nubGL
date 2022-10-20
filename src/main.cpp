@@ -4,7 +4,6 @@
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
 
-
 #include "Shader.h"
 #include "VertexBuffer.h"
 #include "VertexArray.h"
@@ -12,6 +11,10 @@
 #include "Renderer.h"
 #include "GLBufferLayout.h"
 #include "Texture.h"
+
+#include "imgui.h"
+#include "imgui_impl_glfw.h"
+#include "imgui_impl_opengl3.h"
 
 /**
  * drawing a quadrilateral using index buffer.
@@ -45,6 +48,7 @@ int main() {
 
     // Tell GLFW what version of OpenGL we are using
     // In this case we are using OpenGL 3.3
+    const char* glsl_version = "#version 330";
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     // Tell GLFW we are using the CORE profile
@@ -73,8 +77,6 @@ int main() {
     { // different scope for our opengl objects
         glm::mat4 proj = glm::ortho(-1.0f, 1.0f, -(float)w_Height/w_Width, (float)w_Height/w_Width, -1.0f, 1.0f); // 9 : 16 A_R
         glm::mat4 view = glm::translate(glm::mat4(1.0f), glm::vec3(0, 0, 0)); // camera
-//        glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(0, 0, 0)); // transform
-//        glm::mat4 mvp = proj * view * model;
 
         Shader shaderProgram = Shader("Shaders/default.vert", "Shaders/default.frag");
 
@@ -121,49 +123,51 @@ int main() {
 
         Renderer renderer;
 
+        // Init Imgui context
+        ImGui::CreateContext();
+        ImGui::StyleColorsDark();
+
+        ImGui_ImplGlfw_InitForOpenGL(window, true);
+        ImGui_ImplOpenGL3_Init(glsl_version);
+
         // Specify the color of the background
         GLCall(glClearColor(0.5f, 0.7f, 0.7f, 0.13f));
 
         // poll window
 
-        float delta = 0.0075, sx = 5, sy = 5;
+        float sx = 5, sy = 5, speed = 0;
         float scale = 0.4;
         float texture_boundary = 0.5f * scale; // texture size size * scale;
-        auto update = [&](float& x, float& y, float& a) -> void{
-            float y_max = (float)w_Height/w_Width;
-            float y_min = -(float)w_Height/w_Width;
-            float x_max = 1 ;
-            float x_min = -1;
+        auto update = [&](float& x, float& y, float delta) -> void{
+            float y_max = (float)w_Height/w_Width, y_min = -y_max;
+            float x_max = 1, x_min = -x_max;
 
-            if( y + texture_boundary >= y_max )
-                sy = -sy;
-            if( y - texture_boundary <= y_min )
-                sy = -sy;
+            if( y + texture_boundary >= y_max ) sy = -sy;
+            if( y - texture_boundary <= y_min ) sy = -sy;
 
-            if( x + texture_boundary >= x_max )
-                sx = -sx;
-            if( x - texture_boundary <= x_min )
-                sx = -sx;
+            if( x + texture_boundary >= x_max ) sx = -sx;
+            if( x - texture_boundary <= x_min ) sx = -sx;
 
             x += sx*delta;
             y += sy*delta;
-            a ++ ;
-
-            if( sx > 0 ) sx -= 0.01;
-            else sx += 0.01;
-            if( sy > 0 ) sy -= 0.01;
-            else sy += 0.01;
         };
 
-        float x = 0, y = 0, angle = 0; // starting coords
+        float x = 0, y = 0; // starting coords
+
         while (!glfwWindowShouldClose(window)) {
+
             renderer.Clear();
 
-            update(x, y, angle);
+            // Start the Dear ImGui frame
+            ImGui_ImplOpenGL3_NewFrame();
+            ImGui_ImplGlfw_NewFrame();
+            ImGui::NewFrame();
+
+            update(x, y, speed/100.0f);
 
             {
                 glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(x, y, 0));
-                glm::mat4 rot = glm::rotate(model, glm::radians(angle), glm::vec3(0, 0, 1));
+                glm::mat4 rot = glm::rotate(model, glm::radians(.0f), glm::vec3(0, 0, 1));
                 glm::mat4 mvp = proj * view * rot;
 
                 shaderProgram.Bind();
@@ -176,18 +180,17 @@ int main() {
             }
 
             {
-                glm::mat4 model2 = glm::translate(glm::mat4(1.0f), glm::vec3(0, (w_Width/w_Height)/2, 0));
-                glm::mat4 rot = glm::rotate(model2, glm::radians(angle), glm::vec3(0, 1, 1));
-                glm::mat4 mvp = proj * view * rot;
+                ImGui::Begin("Debug Panel");
 
-                shaderProgram.Bind();
-                shaderProgram.setUniformMat4f("u_MVP", mvp);
-                shaderProgram.setFloat("scale", scale);
-                texture0.Bind(slot0);
-                texture1.Bind(slot1);
+                ImGui::SliderFloat("speed", &speed, 0.0f, 1.0f);
+                ImGui::SliderFloat("scale", &scale, 0.0f, 1.0f);
+                ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 
-                renderer.Draw(vao, ebo, shaderProgram);
+                ImGui::End();
             }
+
+            ImGui::Render();
+            ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
             // Swap the back buffer with the front buffer
             glfwSwapBuffers(window);
@@ -200,7 +203,11 @@ int main() {
         ebo.Delete();
         shaderProgram.Delete();
     }
+
     glfwDestroyWindow(window);
+
+    ImGui_ImplOpenGL3_Shutdown();
+    ImGui_ImplGlfw_Shutdown();
     glfwTerminate();
     return 0;
 }

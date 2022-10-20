@@ -2,8 +2,8 @@
 // Created by Anshul Saraf on 05/09/22.
 //
 
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
+#include "glad/glad.h"
+#include "GLFW/glfw3.h"
 #include <iostream>
 #include "GLError.h"
 

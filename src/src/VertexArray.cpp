@@ -2,7 +2,7 @@
 // Created by Anshul Saraf on 30/08/22.
 //
 
-#include"VertexArray.h"
+#include "VertexArray.h"
 #include "GLError.h"
 
 // Constructor that generates a VertexArray ID

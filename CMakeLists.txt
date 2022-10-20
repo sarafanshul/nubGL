@@ -10,8 +10,9 @@ file(GLOB SOURCES CONFIGURE_DEPENDS
         ${PROJECT_SOURCE_DIR}/src/include/*.h
         ${PROJECT_SOURCE_DIR}/src/src/*.cpp
         ${PROJECT_SOURCE_DIR}/lib/stb_image/stb_image.cpp
+        #[[${PROJECT_SOURCE_DIR}/test/imgui_test_main.cpp]]
         ${PROJECT_SOURCE_DIR}/src/main.cpp
-#        ${PROJECT_SOURCE_DIR}/src/test.cpp
+        #[[${PROJECT_SOURCE_DIR}/test/test.cpp]]
 )
 
 find_package(OpenGL REQUIRED)
@@ -36,5 +37,6 @@ add_custom_target(copy_res_directory ALL
 
 add_executable(OpenGLBasics ${SOURCES} )
 add_dependencies( OpenGLBasics copy_res_directory )
+add_subdirectory(lib/imgui)
 
-target_link_libraries(OpenGLBasics glfw ${OPENGL_LIBRARIES} ${GLUT_LIBRARY} glad)
+target_link_libraries(OpenGLBasics glfw ${OPENGL_LIBRARIES} ${GLUT_LIBRARY} glad imgui)
