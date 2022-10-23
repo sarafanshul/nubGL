@@ -3,8 +3,10 @@
 //
 
 #include "../TestVBO.h"
+#include "imgui.h"
 
-Test::TestVBO::TestVBO() {
+Test::TestVBO::TestVBO() :
+        m_Color{0.2, 0.3, 0.8, 0.9} {
     float vertices[] = {
         -0.5, -0.5, 0.0, // bottom left
         0.5, -0.5, 0.0, // bottom right
@@ -58,11 +60,14 @@ TEST_RETURN Test::TestVBO::OnRender() {
     shaderProgram->Bind() ;
     vertexArray->Bind() ;
 
+    shaderProgram->setFloat4("iColor", m_Color[0], m_Color[1], m_Color[2], m_Color[3]);
+
     GLCall( glDrawArrays(GL_TRIANGLES, 0, 9) );
 
     return TEST_RETURN_SUCCESS;
 }
 
 TEST_RETURN Test::TestVBO::OnImGuiRender() {
-    return TEST_RETURN_FAILURE;
+    ImGui::ColorEdit4("Quad Color", m_Color);
+    return TEST_RETURN_SUCCESS;
 }

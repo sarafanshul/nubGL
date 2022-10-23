@@ -30,6 +30,7 @@ namespace Test {
         Scope<Shader> shaderProgram ;
         Scope<VertexArray> vertexArray ;
         Scope<VertexBuffer> vertexBuffer ;
+        float m_Color[4] ;
     };
 }
 
