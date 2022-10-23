@@ -41,7 +41,7 @@ GLuint indices[] = {
         1, 3, 2 //  second triangle
 };
 
-int main() {
+int test() {
 
     // Initialize GLFW
     glfwInit();
@@ -134,11 +134,10 @@ int main() {
         GLCall(glClearColor(0.5f, 0.7f, 0.7f, 0.13f));
 
         // poll window
-
         float sx = 5, sy = 5, speed = 0;
         float scale = 0.4;
-        float texture_boundary = 0.5f * scale; // texture size size * scale;
         auto update = [&](float& x, float& y, float delta) -> void{
+            float texture_boundary = 0.5f * scale; // texture size size * scale;
             float y_max = (float)w_Height/w_Width, y_min = -y_max;
             float x_max = 1, x_min = -x_max;
 

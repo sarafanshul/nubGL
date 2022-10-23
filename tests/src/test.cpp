@@ -58,7 +58,7 @@ static GLuint CreateShader( const std::string& vertexShader, const std::string& 
     return program;
 }
 
-int main(){
+int test_glfw(){
     GLFWwindow* window;
 
     if( !glfwInit() )

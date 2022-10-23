@@ -10,9 +10,9 @@ file(GLOB SOURCES CONFIGURE_DEPENDS
         ${PROJECT_SOURCE_DIR}/src/include/*.h
         ${PROJECT_SOURCE_DIR}/src/src/*.cpp
         ${PROJECT_SOURCE_DIR}/lib/stb_image/stb_image.cpp
-        #[[${PROJECT_SOURCE_DIR}/test/imgui_test_main.cpp]]
-        ${PROJECT_SOURCE_DIR}/src/main.cpp
-        #[[${PROJECT_SOURCE_DIR}/test/test.cpp]]
+        ${PROJECT_SOURCE_DIR}/tests/src/*.cpp
+        ${PROJECT_SOURCE_DIR}/tests/*.h
+        main.cpp
 )
 
 find_package(OpenGL REQUIRED)
@@ -34,9 +34,16 @@ add_custom_target(copy_res_directory ALL
         COMMENT "Copy Resources directory to build tree"
         VERBATIM
 )
+add_custom_target(copy_test_res_directory ALL
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+        "${CMAKE_SOURCE_DIR}/tests/res" "${CMAKE_BINARY_DIR}"
+        COMMENT "Copy Resources directory to build tree"
+        VERBATIM
+        )
 
 add_executable(OpenGLBasics ${SOURCES} )
 add_dependencies( OpenGLBasics copy_res_directory )
+add_dependencies( OpenGLBasics copy_test_res_directory )
 add_subdirectory(lib/imgui)
 
 target_link_libraries(OpenGLBasics glfw ${OPENGL_LIBRARIES} ${GLUT_LIBRARY} glad imgui)
