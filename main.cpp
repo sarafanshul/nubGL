@@ -5,14 +5,13 @@
 #include <iostream>
 #include "glad/glad.h"
 #include "GLFW/glfw3.h"
-#include "Renderer.h"
 #include "GLBufferLayout.h"
 
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
 
-#include "tests/TestVBO.h"
+#include "tests/TestEBO.h"
 
 int main() {
     glfwInit();
@@ -46,7 +45,7 @@ int main() {
         ImGui_ImplGlfw_InitForOpenGL(window, true);
         ImGui_ImplOpenGL3_Init(glsl_version);
 
-        Test::TestVBO test ;
+        Test::TestEBO test ;
 
         while (!glfwWindowShouldClose(window)) {
 

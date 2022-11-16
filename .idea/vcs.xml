@@ -4,5 +4,7 @@
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/lib/glad" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/lib/glfw" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/lib/glm" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/lib/imgui/imgui" vcs="Git" />
   </component>
 </project>
