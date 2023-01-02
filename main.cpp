@@ -11,7 +11,7 @@
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
 
-#include "tests/TestEBO.h"
+#include "tests/TestTexture2D.h"
 
 int main() {
     glfwInit();
@@ -45,7 +45,7 @@ int main() {
         ImGui_ImplGlfw_InitForOpenGL(window, true);
         ImGui_ImplOpenGL3_Init(glsl_version);
 
-        Test::TestEBO test ;
+        Test::TestTexture2D test ;
 
         while (!glfwWindowShouldClose(window)) {
 
