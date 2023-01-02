@@ -69,7 +69,7 @@ TEST_RETURN Test::TestEBO::OnRender() {
     shaderProgram->Bind();
     shaderProgram->setFloat4("iColor", m_Color[0], m_Color[1], m_Color[2], m_Color[3]);
 
-    renderer->Draw( *vertexArray, *indexBuffer, *shaderProgram );
+    renderer->DrawElements(*vertexArray, *indexBuffer, *shaderProgram );
 
     return TEST_RETURN_SUCCESS;
 }

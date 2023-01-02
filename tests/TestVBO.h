@@ -8,7 +8,7 @@
 #include "Test.h"
 #include "Shader.h"
 #include "VertexArray.h"
-#include "Utils.h"
+#include "Common.h"
 #include "Renderer.h"
 
 namespace Test {

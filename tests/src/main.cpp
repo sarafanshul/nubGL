@@ -175,7 +175,7 @@ int test() {
                 texture0.Bind(slot0);
                 texture1.Bind(slot1);
 
-                renderer.Draw(vao, ebo, shaderProgram);
+                renderer.DrawElements(vao, ebo, shaderProgram);
             }
 
             {

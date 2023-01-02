@@ -12,7 +12,7 @@ void Renderer::Clear() const {
 /**
  * Draw call for Element Buffer objects
  */
-void Renderer::Draw(const VertexArray& vao, const IndexBuffer& ebo, const Shader& shader) const {
+void Renderer::DrawElements(const VertexArray& vao, const IndexBuffer& ebo, const Shader& shader) const {
     // Tell OpenGL which Shader Program we want to use
     shader.Bind();
     // Bind the VertexArray so OpenGL knows to use it

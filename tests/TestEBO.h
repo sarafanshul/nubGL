@@ -9,7 +9,7 @@
 #include "Shader.h"
 #include "VertexArray.h"
 #include "IndexBuffer.h"
-#include "Utils.h"
+#include "Common.h"
 #include "Renderer.h"
 
 namespace Test {

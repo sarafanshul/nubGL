@@ -14,7 +14,7 @@ public:
 
     void Clear() const;
 
-    void Draw(const VertexArray& vao, const IndexBuffer& ebo, const Shader& shader) const;
+    void DrawElements(const VertexArray& vao, const IndexBuffer& ebo, const Shader& shader) const;
 };
 
 #endif //OPENGLBASICS_RENDERER_H

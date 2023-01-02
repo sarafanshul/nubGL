@@ -13,8 +13,8 @@ namespace Test {
 
     class Test{
     public:
-        Test() {}
-        virtual ~Test() {}
+        Test() = default;
+        virtual ~Test() = default;
 
         virtual TEST_RETURN OnUpdate( float  deltaTime ) = 0;
         virtual TEST_RETURN OnRender() = 0;
