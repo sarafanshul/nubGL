@@ -7,6 +7,7 @@
 
 #include "Test.h"
 #include "glm/glm.hpp"
+#include "spdlog/spdlog.h"
 
 namespace Test {
 

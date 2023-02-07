@@ -5,7 +5,7 @@
 #ifndef OPENGLBASICS_GLBUFFERLAYOUT_H
 #define OPENGLBASICS_GLBUFFERLAYOUT_H
 
-#include <glad/glad.h>
+#include "glad/glad.h"
 #include "vector"
 #include "GLError.h"
 

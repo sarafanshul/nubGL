@@ -12,6 +12,7 @@
 #include "imgui_impl_opengl3.h"
 
 #include "tests/Test3D.h"
+#include "Instrumentor.h"
 
 int main() {
     glfwInit();
@@ -20,6 +21,8 @@ int main() {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
+    HZ_PROFILE_BEGIN_SESSION("Runtime", "HazelProfile-Runtime.json");
 
     const int w_Width = 16 * 50  , w_Height = 12 * 50 ;
     GLFWwindow* window = glfwCreateWindow(w_Width, w_Height, "TestOpenGL", nullptr, nullptr);
@@ -73,5 +76,7 @@ int main() {
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplGlfw_Shutdown();
     glfwTerminate();
+
+    HZ_PROFILE_END_SESSION();
     return 0;
 }

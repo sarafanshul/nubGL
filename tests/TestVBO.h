@@ -6,10 +6,6 @@
 #define OPENGLBASICS_TESTVBO_H
 
 #include "Test.h"
-#include "Shader.h"
-#include "VertexArray.h"
-#include "Common.h"
-#include "Renderer.h"
 
 namespace Test {
     class TestVBO : public Test {

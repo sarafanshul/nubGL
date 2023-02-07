@@ -6,11 +6,6 @@
 #define OPENGLBASICS_TESTTEXTURE2D_H
 
 #include "Test.h"
-#include "Shader.h"
-#include "VertexArray.h"
-#include "Texture.h"
-#include "Common.h"
-#include "Renderer.h"
 
 #define COPY_TEXTURE 1 // copy the data from texture0 to texture1 and then render.
 

@@ -5,7 +5,7 @@
 #ifndef OPENGLBASICS_VERTEXARRAY_H
 #define OPENGLBASICS_VERTEXARRAY_H
 
-#include<glad/glad.h>
+#include"glad/glad.h"
 #include"VertexBuffer.h"
 #include "GLBuffer.h"
 #include "GLBufferLayout.h"

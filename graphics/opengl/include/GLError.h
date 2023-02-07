@@ -5,7 +5,7 @@
 #ifndef OPENGLBASICS_GLERROR_H
 #define OPENGLBASICS_GLERROR_H
 
-#include <glad/glad.h>
+#include "glad/glad.h"
 #include <iostream>
 #include <csignal>
 

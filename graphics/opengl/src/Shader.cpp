@@ -64,27 +64,27 @@ void Shader::Delete() {
     GLCall(glDeleteProgram(ID));
 }
 
-[[maybe_unused]] void Shader::setBool(const std::string& name, bool value) {
+[[maybe_unused]] void Shader::setBool(const std::string& name, bool value) const{
     GLCall(glUniform1i(GetUniformLocation(name), (int) value));
 }
 
-[[maybe_unused]] void Shader::setInt(const std::string& name, int value) {
+[[maybe_unused]] void Shader::setInt(const std::string& name, int value) const{
     GLCall(glUniform1i(GetUniformLocation(name), value));
 }
 
-[[maybe_unused]] void Shader::setFloat(const std::string& name, float value) {
+[[maybe_unused]] void Shader::setFloat(const std::string& name, float value) const{
     GLCall(glUniform1f(GetUniformLocation(name), value));
 }
 
-[[maybe_unused]] void Shader::setFloat4(const std::string& name, float v1, float v2, float v3, float v4) {
+[[maybe_unused]] void Shader::setFloat4(const std::string& name, float v1, float v2, float v3, float v4) const{
     GLCall(glUniform4f(GetUniformLocation(name), v1, v2, v3, v4));
 }
 
-[[maybe_unused]] void Shader::setUniformMat4f(const std::string& name, const glm::mat4& matrix) {
+[[maybe_unused]] void Shader::setUniformMat4f(const std::string& name, const glm::mat4& matrix) const {
     GLCall(glUniformMatrix4fv(GetUniformLocation(name), 1, GL_FALSE, &matrix[0][0]));
 }
 
-GLuint Shader::GetUniformLocation(const std::string& name) {
+GLuint Shader::GetUniformLocation(const std::string& name) const {
     if ( uniformLocationCache.find(name) != uniformLocationCache.end()) {
         return uniformLocationCache[ name ];
     }

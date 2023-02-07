@@ -27,27 +27,27 @@ public:
 
     void Delete();
 
-    [[maybe_unused]] void setBool(const std::string& name, bool value);
+    [[maybe_unused]] void setBool(const std::string& name, bool value) const;
 
-    [[maybe_unused]] void setInt(const std::string& name, int value);
+    [[maybe_unused]] void setInt(const std::string& name, int value) const;
 
-    [[maybe_unused]] void setFloat(const std::string& name, float value);
+    [[maybe_unused]] void setFloat(const std::string& name, float value) const;
 
-    [[maybe_unused]] void setFloat4(const std::string& name, float v1, float v2, float v3, float v4);
+    [[maybe_unused]] void setFloat4(const std::string& name, float v1, float v2, float v3, float v4) const;
 
-    [[maybe_unused]] void setUniformMat4f(const std::string& name, const glm::mat4& matrix);
+    [[maybe_unused]] void setUniformMat4f(const std::string& name, const glm::mat4& matrix) const;
 
     ~Shader();
 
 private:
     static GLuint compileShaders(const char* source, GLint type);
 
-    [[nodiscard]] GLuint GetUniformLocation(const std::string& name);
+    [[nodiscard]] GLuint GetUniformLocation(const std::string& name) const;
 
     // Checks if the different Shaders have compiled properly
     static void compileErrors(unsigned int shader, GLint type);
 
-    std::unordered_map<std::string, GLint> uniformLocationCache;
+    mutable std::unordered_map<std::string, GLint> uniformLocationCache;
     GLuint ID;
 };
 

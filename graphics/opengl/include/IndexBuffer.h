@@ -5,7 +5,7 @@
 #ifndef OPENGLBASICS_INDEXBUFFER_H
 #define OPENGLBASICS_INDEXBUFFER_H
 
-#include<glad/glad.h>
+#include"glad/glad.h"
 #include "GLBuffer.h"
 
 class IndexBuffer : public GLBuffer {
