@@ -5,6 +5,12 @@
 #ifndef OPENGLBASICS_TEST_H
 #define OPENGLBASICS_TEST_H
 
+#include "Shader.h"
+#include "VertexArray.h"
+#include "Texture.h"
+#include "Common.h"
+#include "Renderer.h"
+
 namespace Test {
 
 #define TEST_RETURN bool
@@ -19,6 +25,8 @@ namespace Test {
         virtual TEST_RETURN OnUpdate( float  deltaTime ) = 0;
         virtual TEST_RETURN OnRender() = 0;
         virtual TEST_RETURN OnImGuiRender() = 0;
+
+        float m_windowWidth = -1, m_windowHeight = -1;
     };
 }
 

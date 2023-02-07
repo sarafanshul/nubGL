@@ -12,6 +12,8 @@
 #include "Common.h"
 #include "Renderer.h"
 
+#define COPY_TEXTURE 1 // copy the data from texture0 to texture1 and then render.
+
 namespace Test{
     class TestTexture2D : public Test {
     public:
@@ -40,6 +42,12 @@ namespace Test{
         const std::string vert_shader_path = "Shaders/test_texture2D.vert";
         const std::string frag_shader_path = "Shaders/test_texture2D.frag";
         const std::string texture_path     = "Textures/alpha_image.png";
+
+#if COPY_TEXTURE
+        GLuint fbo;
+        Scope<Texture> texture1;
+        int slot1 = 1;
+#endif
     };
 }
 
