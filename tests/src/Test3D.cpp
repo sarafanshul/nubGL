@@ -83,7 +83,7 @@ Test::Test3D::~Test3D() {
         const auto& perFrameData = Profiler::m_PerformanceProfile->GetPerFrameData();
         TRACE("-----------Performance-----------------");
         for (auto&& [name, time]: perFrameData) {
-            TRACE("{0}: {1}ms\n", name, time);
+            INFO("{0}: {1}ms", name, time);
         }
         TRACE("---------------------------------------");
         Profiler::m_PerformanceProfile->Clear();
