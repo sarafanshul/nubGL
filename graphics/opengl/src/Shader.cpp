@@ -20,6 +20,9 @@ std::string get_file_contents(const char* filename) {
     throw (errno);
 }
 
+Shader::Shader(const std::string& vertexFile, const std::string& fragmentFile) :
+    Shader(vertexFile.c_str(), fragmentFile.c_str()){}
+
 // Constructor that build the Shader Program from 2 different shaders
 Shader::Shader(const char* vertexFile, const char* fragmentFile) {
 
@@ -48,6 +51,10 @@ Shader::Shader(const char* vertexFile, const char* fragmentFile) {
     glDeleteShader(vertexShader);
     glDeleteShader(fragmentShader);
 
+}
+
+GLuint Shader::GetId() const {
+    return ID;
 }
 
 // Activates the Shader Program

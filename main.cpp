@@ -11,7 +11,7 @@
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
 
-#include "tests/Test3D.h"
+#include "tests/TestBatchRenderingV1.h"
 #include "Instrumentor.h"
 
 int main() {
@@ -48,7 +48,7 @@ int main() {
         ImGui_ImplGlfw_InitForOpenGL(window, true);
         ImGui_ImplOpenGL3_Init(glsl_version);
 
-        Test::Test3D test ;
+        Test::TestBatchRenderingV1 test ;
         test.m_windowWidth = w_Width, test.m_windowHeight = w_Height;
 
         while (!glfwWindowShouldClose(window)) {

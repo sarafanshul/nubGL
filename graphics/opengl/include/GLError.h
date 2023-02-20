@@ -47,8 +47,7 @@ static bool GLCheckError() {
 static bool __GLLogCall(const char* function, const char* file, int line) {
     GLenum error = glGetError();
     while (error != GL_NO_ERROR) {
-        std::cerr << "[OpenGL Error]" << function << ":" << file << ":" << line << "-->" << glGetErrorString(error)
-                  << std::endl;
+        std::cerr << "[OpenGL Error]" << function << ":" << file << ":" << line << "-->" << glGetErrorString(error) << std::endl;
         error = glGetError();
         return false;
     }

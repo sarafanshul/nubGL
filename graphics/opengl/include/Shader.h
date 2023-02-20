@@ -19,6 +19,8 @@ std::string get_file_contents(const char* filename);
 class Shader {
 public:
 
+    Shader(const std::string& vertexFile, const std::string& fragmentFile);
+
     Shader(const char* vertexFile, const char* fragmentFile);
 
     void Bind() const;
@@ -26,6 +28,8 @@ public:
     void Unbind() const;
 
     void Delete();
+
+    GLuint GetId() const;
 
     [[maybe_unused]] void setBool(const std::string& name, bool value) const;
 
