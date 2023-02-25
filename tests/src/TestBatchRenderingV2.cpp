@@ -2,9 +2,57 @@
 // Created by Anshul Saraf on 21/02/23.
 //
 
-#include "../TestBatchRenderingV1.h"
+#include "../TestBatchRenderingV2.h"
+#include "glm/ext/matrix_transform.hpp"
+#include "Logger.h"
+#include <glm/gtx/rotate_vector.hpp>
 
-Test::TestBatchRenderingV1::TestBatchRenderingV1() {
+
+std::vector<Quad> convert(const float* vertices, int size, int offset ){
+    std::vector<Quad> ret(3) ;
+
+    int idx = 0 ;
+    for(int i = 0 ; i < size ; i += offset){
+        Vertex v = Vertex();
+        v.m_Pos[0] = vertices[i + 0];
+        v.m_Pos[1] = vertices[i + 1];
+        v.m_Pos[2] = vertices[i + 2];
+
+        v.m_Col[0] = vertices[i + 3];
+        v.m_Col[1] = vertices[i + 4];
+        v.m_Col[2] = vertices[i + 5];
+        v.m_Col[3] = vertices[i + 6];
+
+        v.m_TexCord[0] = vertices[ i + 7];
+        v.m_TexCord[1] = vertices[ i + 8];
+
+        v.m_TexId = vertices[i + 9];
+
+        ret[idx / 4].vertices[idx % 4] = v;
+        idx++ ;
+    }
+    return ret ;
+}
+
+void convert(const std::vector<Quad>& quads, float* ret){
+    int i = 0;
+    for(const auto q: quads){
+        for(const auto v : q.vertices) {
+            ret[ i++ ] = v.m_Pos[ 0 ];
+            ret[ i++ ] = v.m_Pos[ 1 ];
+            ret[ i++ ] = v.m_Pos[ 2 ];
+            ret[ i++ ] = v.m_Col[ 0 ];
+            ret[ i++ ] = v.m_Col[ 1 ];
+            ret[ i++ ] = v.m_Col[ 2 ];
+            ret[ i++ ] = v.m_Col[ 3 ];
+            ret[ i++ ] = v.m_TexCord[ 0 ];
+            ret[ i++ ] = v.m_TexCord[ 1 ];
+            ret[ i++ ] = v.m_TexId;
+        }
+    }
+}
+
+Test::TestBatchRenderingV2::TestBatchRenderingV2() {
 
     float vertices[] = {
             // x , y , z       r,  g,    b,   a,     tx ,ty,   tid
@@ -41,6 +89,8 @@ Test::TestBatchRenderingV1::TestBatchRenderingV1() {
             8, 10, 11,
     };
 
+    m_Quads = convert(vertices, sizeof(vertices) / sizeof(float ), 3 + 4 + 2 + 1);
+
     std::vector<std::string> mTextureAssets = {
             "Textures/rock_wall_06_diff_1k.jpg",
             "Textures/fabric_pattern_07_col_1_1k.png",
@@ -52,14 +102,14 @@ Test::TestBatchRenderingV1::TestBatchRenderingV1() {
 
     vao->Bind();
 
-    vbo = CreateScope<VertexBuffer>(vertices, sizeof(vertices));
+    vbo = CreateScope<VertexBuffer>(nullptr, sizeof(Vertex) * 1000, GL_DYNAMIC_DRAW);
     ebo = CreateScope<IndexBuffer>(indices, sizeof(indices));
 
     GLBufferLayout layout;
-    layout.Push<float>(3); // pos
-    layout.Push<float>(4); // color
-    layout.Push<float>(2); // texCords
-    layout.Push<float>(1); // texId
+    layout.Push<float>(sizeof(Vertex::m_Pos) / sizeof(float)); // pos
+    layout.Push<float>(sizeof(Vertex::m_Col) / sizeof(float)); // color
+    layout.Push<float>(sizeof(Vertex::m_TexCord) / sizeof(float)); // texCords
+    layout.Push<float>(sizeof(Vertex::m_TexId) / sizeof(float)); // texId
 
     vao->AddBuffer(*vbo, layout);
 
@@ -81,7 +131,7 @@ Test::TestBatchRenderingV1::TestBatchRenderingV1() {
 
 }
 
-Test::TestBatchRenderingV1::~TestBatchRenderingV1() {
+Test::TestBatchRenderingV2::~TestBatchRenderingV2() {
     vao->Unbind();
     vbo->Unbind();
     ebo->Unbind();
@@ -93,14 +143,29 @@ Test::TestBatchRenderingV1::~TestBatchRenderingV1() {
     shader->Delete();
 }
 
-TEST_RETURN Test::TestBatchRenderingV1::OnUpdate( float  deltaTime ) {
+TEST_RETURN Test::TestBatchRenderingV2::OnUpdate( float  deltaTime ) {
     return TEST_RETURN_FAILURE;
 }
 
-TEST_RETURN Test::TestBatchRenderingV1::OnRender() {
+TEST_RETURN Test::TestBatchRenderingV2::OnRender() {
+
     renderer->Clear();
+    glClearColor(0.3, 0.4, 0.5, 0.9);
+
+    float vertices[ m_Quads.size() * 4 * (sizeof(Vertex) / sizeof(float )) ];
+
+    // do some ops here
+    for ( auto& v : m_Quads[0].vertices){
+        glm::mat4 rotationMat(1);
+        v.m_Pos = glm::rotate(v.m_Pos, 0.01f, glm::vec3(0.0f, 0.0f, 1.0f));
+    }
+    convert(m_Quads, vertices);
 
     shader->Bind();
+
+    vao->Bind();
+    // set data for vbo every frame.
+    vbo->SetBufferSubData(vertices, sizeof(vertices));
 
     for(const auto& [idx, tex] : textureMap){
         tex->Bind(idx);
@@ -111,6 +176,6 @@ TEST_RETURN Test::TestBatchRenderingV1::OnRender() {
     return TEST_RETURN_SUCCESS;
 }
 
-TEST_RETURN Test::TestBatchRenderingV1::OnImGuiRender() {
+TEST_RETURN Test::TestBatchRenderingV2::OnImGuiRender() {
     return TEST_RETURN_FAILURE;
 }
