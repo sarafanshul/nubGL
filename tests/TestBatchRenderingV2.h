@@ -8,7 +8,7 @@
 
 #include <map>
 #include <array>
-#include "Test.h"
+#include "TestDebugLayer.h"
 #include "glm/glm.hpp"
 #include "spdlog/spdlog.h"
 
@@ -31,7 +31,7 @@ namespace Test {
      *
      * for textures we use a texture map and pass an texture index to use for.
      */
-    class TestBatchRenderingV2 : public Test {
+    class TestBatchRenderingV2 : public TestDebugLayer {
     public:
         TestBatchRenderingV2() ;
         ~TestBatchRenderingV2() override ;
@@ -52,7 +52,7 @@ namespace Test {
 
         std::map<int, Scope<Texture>> textureMap;
 
-        std::vector<Vertex> m_Vertices;
+        float m_Vertices[1000];
         std::vector<Quad> m_Quads;
 
         float rot = 0 ;

@@ -69,12 +69,12 @@ namespace Hazel {
             json << std::setprecision(3) << std::fixed;
             json << ",{";
             json << "\"cat\":\"function\",";
-            json << "\"dur\":" << (result.ElapsedTime.count()) << ',';
+            json << "\"dur_us\":" << (result.ElapsedTime.count()) << ',';
             json << "\"name\":\"" << result.Name << "\",";
             json << "\"ph\":\"X\",";
-            json << "\"pid\":0,";
-            json << "\"tid\":" << result.ThreadID << ",";
-            json << "\"ts\":" << result.Start.count();
+            json << "\"pid\":-1,";
+            json << "\"tid\":" << std::hash<std::thread::id>{}(result.ThreadID) << ",";
+            json << "\"ts_us\":" << result.Start.count();
             json << "}";
 
             std::lock_guard lock(m_Mutex);

@@ -61,7 +61,6 @@ int main() {
             ImGui::NewFrame();
 
             test.OnImGuiRender() ;
-
             ImGui::Render();
             ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 

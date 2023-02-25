@@ -52,7 +52,8 @@ void convert(const std::vector<Quad>& quads, float* ret){
     }
 }
 
-Test::TestBatchRenderingV2::TestBatchRenderingV2() {
+Test::TestBatchRenderingV2::TestBatchRenderingV2() : TestDebugLayer() {
+    HZ_PROFILE_FUNCTION();
 
     float vertices[] = {
             // x , y , z       r,  g,    b,   a,     tx ,ty,   tid
@@ -141,31 +142,35 @@ Test::TestBatchRenderingV2::~TestBatchRenderingV2() {
     vbo->Delete();
     ebo->Delete();
     shader->Delete();
+
+//    TestDebugLayer::~TestDebugLayer();
 }
 
 TEST_RETURN Test::TestBatchRenderingV2::OnUpdate( float  deltaTime ) {
+    TestDebugLayer::OnUpdate(deltaTime);
     return TEST_RETURN_FAILURE;
 }
 
 TEST_RETURN Test::TestBatchRenderingV2::OnRender() {
+    TestDebugLayer::OnRender();
+
+    HZ_PROFILE_FUNCTION();
 
     renderer->Clear();
     glClearColor(0.3, 0.4, 0.5, 0.9);
-
-    float vertices[ m_Quads.size() * 4 * (sizeof(Vertex) / sizeof(float )) ];
 
     // do some ops here
     for ( auto& v : m_Quads[0].vertices){
         glm::mat4 rotationMat(1);
         v.m_Pos = glm::rotate(v.m_Pos, 0.01f, glm::vec3(0.0f, 0.0f, 1.0f));
     }
-    convert(m_Quads, vertices);
+    convert(m_Quads, m_Vertices);
 
     shader->Bind();
 
     vao->Bind();
     // set data for vbo every frame.
-    vbo->SetBufferSubData(vertices, sizeof(vertices));
+    vbo->SetBufferSubData(m_Vertices, (GLsizeiptr)(m_Quads.size() * 4 * sizeof(Vertex)) );
 
     for(const auto& [idx, tex] : textureMap){
         tex->Bind(idx);
@@ -177,5 +182,6 @@ TEST_RETURN Test::TestBatchRenderingV2::OnRender() {
 }
 
 TEST_RETURN Test::TestBatchRenderingV2::OnImGuiRender() {
+    TestDebugLayer::OnImGuiRender();
     return TEST_RETURN_FAILURE;
 }
