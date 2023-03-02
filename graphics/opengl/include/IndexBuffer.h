@@ -13,8 +13,12 @@ public:
     // Constructor that generates an Elements GLBuffer Object, binds it, and links it to indices
     IndexBuffer(GLuint* indices, GLsizeiptr size);
 
+    IndexBuffer(GLuint* indices, GLsizeiptr size, GLenum usage);
+
     // Binds the IndexBuffer
     void Bind() const override;
+
+    void SetBufferSubData(GLuint* indices, GLsizeiptr size, GLintptr offset = 0);
 
     // Unbinds the IndexBuffer
     void Unbind() const override;

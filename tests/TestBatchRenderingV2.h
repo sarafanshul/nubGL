@@ -21,6 +21,7 @@ struct Vertex{
 
 struct Quad{
     std::array<Vertex, 4> vertices;
+    std::array<uint, 6> indices;
 };
 
 namespace Test {
@@ -53,7 +54,9 @@ namespace Test {
         std::map<int, Scope<Texture>> textureMap;
 
         float m_Vertices[1000];
+        uint m_Indices[1000];
         std::vector<Quad> m_Quads;
+        uint quadsToDraw;
 
         float rot = 0 ;
     };

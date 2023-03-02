@@ -3,7 +3,6 @@
 //
 
 #include "../TestBatchRenderingV2.h"
-#include "glm/ext/matrix_transform.hpp"
 #include "Logger.h"
 #include <glm/gtx/rotate_vector.hpp>
 
@@ -34,7 +33,7 @@ std::vector<Quad> convert(const float* vertices, int size, int offset ){
     return ret ;
 }
 
-void convert(const std::vector<Quad>& quads, float* ret){
+void getVertices(const std::vector<Quad>& quads, float* ret){
     int i = 0;
     for(const auto q: quads){
         for(const auto v : q.vertices) {
@@ -48,6 +47,15 @@ void convert(const std::vector<Quad>& quads, float* ret){
             ret[ i++ ] = v.m_TexCord[ 0 ];
             ret[ i++ ] = v.m_TexCord[ 1 ];
             ret[ i++ ] = v.m_TexId;
+        }
+    }
+}
+
+void getIndices(const std::vector<Quad>& quads, uint* ret){
+    int i = 0 ;
+    for(const auto q: quads){
+        for(const auto idx : q.indices) {
+            ret[i++] = idx;
         }
     }
 }
@@ -91,6 +99,11 @@ Test::TestBatchRenderingV2::TestBatchRenderingV2() : TestDebugLayer() {
     };
 
     m_Quads = convert(vertices, sizeof(vertices) / sizeof(float ), 3 + 4 + 2 + 1);
+    int i = 0;
+    for(auto& q : m_Quads){
+        for( auto& iBuf : q.indices )
+            iBuf = indices[i++] ;
+    }
 
     std::vector<std::string> mTextureAssets = {
             "Textures/rock_wall_06_diff_1k.jpg",
@@ -104,7 +117,7 @@ Test::TestBatchRenderingV2::TestBatchRenderingV2() : TestDebugLayer() {
     vao->Bind();
 
     vbo = CreateScope<VertexBuffer>(nullptr, sizeof(Vertex) * 1000, GL_DYNAMIC_DRAW);
-    ebo = CreateScope<IndexBuffer>(indices, sizeof(indices));
+    ebo = CreateScope<IndexBuffer>(nullptr, sizeof(uint) * 1000, GL_DYNAMIC_DRAW);
 
     GLBufferLayout layout;
     layout.Push<float>(sizeof(Vertex::m_Pos) / sizeof(float)); // pos
@@ -164,13 +177,18 @@ TEST_RETURN Test::TestBatchRenderingV2::OnRender() {
         glm::mat4 rotationMat(1);
         v.m_Pos = glm::rotate(v.m_Pos, 0.01f, glm::vec3(0.0f, 0.0f, 1.0f));
     }
-    convert(m_Quads, m_Vertices);
+
+    getVertices(m_Quads, m_Vertices);
+    getIndices(m_Quads, m_Indices);
 
     shader->Bind();
 
     vao->Bind();
+
     // set data for vbo every frame.
-    vbo->SetBufferSubData(m_Vertices, (GLsizeiptr)(m_Quads.size() * 4 * sizeof(Vertex)) );
+    vbo->SetBufferSubData(m_Vertices, (GLsizeiptr)(quadsToDraw * 4 * sizeof(Vertex)) );
+    // set same for ebo
+    ebo->SetBufferSubData(m_Indices, (GLsizeiptr)(quadsToDraw * 6 * sizeof(uint)) );
 
     for(const auto& [idx, tex] : textureMap){
         tex->Bind(idx);
@@ -183,5 +201,9 @@ TEST_RETURN Test::TestBatchRenderingV2::OnRender() {
 
 TEST_RETURN Test::TestBatchRenderingV2::OnImGuiRender() {
     TestDebugLayer::OnImGuiRender();
+    ImGui::Begin("TestBatchRenderingV2");
+    int p_min = 0, p_max = 3;
+    ImGui::SliderScalar("Rendered", ImGuiDataType_U16, &quadsToDraw, &p_min, &p_max, "%d quads");
+    ImGui::End();
     return TEST_RETURN_FAILURE;
 }
