@@ -7,7 +7,7 @@
 
 #include "Shader.h"
 #include "VertexArray.h"
-#include "Texture.h"
+#include "Texture2D.h"
 #include "Common.h"
 #include "Renderer.h"
 

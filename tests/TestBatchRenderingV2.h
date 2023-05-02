@@ -51,7 +51,7 @@ namespace Test {
         std::string vert_shader = "Shaders/test_BRV2.vert" ;
         std::string frag_shader = "Shaders/test_BRV2.frag" ;
 
-        std::map<int, Scope<Texture>> textureMap;
+        std::map<int, Scope<Texture2D>> textureMap;
 
         float m_Vertices[1000];
         uint m_Indices[1000];

@@ -10,7 +10,7 @@
 #include "IndexBuffer.h"
 #include "Renderer.h"
 #include "GLBufferLayout.h"
-#include "Texture.h"
+#include "Texture2D.h"
 
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
@@ -101,13 +101,13 @@ int test() {
         // Generates Element GLBuffer Object and links it to indices
         IndexBuffer ebo = IndexBuffer(indices, sizeof(indices));
 
-        Texture texture0 = Texture("Textures/alpha_image.png");
+        Texture2D texture0 = Texture2D("Textures/alpha_image.png");
         int slot0 = 0;
         texture0.Bind(slot0);
         shaderProgram.Bind();
         shaderProgram.setInt("u_Texture0", slot0);
 
-        Texture texture1 = Texture("Textures/lawn_alpha.png");
+        Texture2D texture1 = Texture2D("Textures/lawn_alpha.png");
         int slot1 = 1;
         texture1.Bind(slot1);
         shaderProgram.Bind();

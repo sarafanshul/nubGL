@@ -38,7 +38,7 @@ namespace Test {
         std::string frag_shader = "Shaders/test_BRV1.frag" ;
         std::string texture_path = "Textures/op.jpeg" ;
 
-        std::map<int, Scope<Texture>> textureMap;
+        std::map<int, Scope<Texture2D>> textureMap;
 
         float rot = 0 ;
     };

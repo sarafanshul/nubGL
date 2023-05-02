@@ -47,7 +47,7 @@ Test::Test3D::Test3D() {
 
     vao->AddBuffer(*vbo, layout);
 
-    texture0 = CreateScope<Texture>(texture_path);
+    texture0 = CreateScope<Texture2D>(texture_path);
 
     shader->Bind();
     texture0->Bind(0);

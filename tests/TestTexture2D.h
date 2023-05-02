@@ -6,8 +6,10 @@
 #define OPENGLBASICS_TESTTEXTURE2D_H
 
 #include "Test.h"
+#include "TextureConverter.h"
 
-#define COPY_TEXTURE 1 // copy the data from texture0 to texture1 and then render.
+#define COPY_TEXTURE 0 // copy the data from texture0 to texture1 and then render.
+#define TEXTURE_CONVERTER 1
 
 namespace Test{
     class TestTexture2D : public Test {
@@ -31,7 +33,11 @@ namespace Test{
 
         Scope<Renderer> renderer;
 
-        Scope<Texture> texture0;
+#if TEXTURE_CONVERTER
+        Scope<TextureConverter> converter;
+        Scope<Texture2D> renderTexture;
+#endif
+        Scope<Texture2D> texture0;
         int slot0 = 0;
 
         const std::string vert_shader_path = "Shaders/test_texture2D.vert";
@@ -40,7 +46,7 @@ namespace Test{
 
 #if COPY_TEXTURE
         GLuint fbo;
-        Scope<Texture> texture1;
+        Scope<Texture2D> texture1;
         int slot1 = 1;
 #endif
     };

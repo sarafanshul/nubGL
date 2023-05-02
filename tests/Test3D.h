@@ -31,7 +31,7 @@ namespace Test {
         Scope<VertexBuffer> vbo ;
         Scope<IndexBuffer> ebo ;
         Scope<Renderer> renderer ;
-        Scope<Texture> texture0;
+        Scope<Texture2D> texture0;
 
         std::string vert_shader = "Shaders/test_3D.vert" ;
         std::string frag_shader = "Shaders/test_3D.frag" ;

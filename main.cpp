@@ -48,7 +48,7 @@ int main() {
         ImGui_ImplGlfw_InitForOpenGL(window, true);
         ImGui_ImplOpenGL3_Init(glsl_version);
 
-        Test::TestBatchRenderingV2 test ;
+        Test::TestTexture2D test ;
         test.m_windowWidth = w_Width, test.m_windowHeight = w_Height;
 
         while (!glfwWindowShouldClose(window)) {

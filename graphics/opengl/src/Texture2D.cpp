@@ -2,25 +2,26 @@
 // Created by Anshul Saraf on 17/09/22.
 //
 
-#include "Texture.h"
+#include "Texture2D.h"
 #include "GLError.h"
 #include "stb_image.h"
 
-Texture::Texture(int width, int height, int bpp) :
+Texture2D::Texture2D(int width, int height, int bpp) :
     ID(0), m_Width(width), m_Height(height), m_BPP(bpp)
     {
 
     GLCall( glGenTextures(1, &ID) );
     GLCall( glBindTexture(GL_TEXTURE_2D, ID) );
 
-    GLCall( glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR   ) );
-    GLCall( glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR                 ) );
+    GLCall( glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR   ) );
+    GLCall( glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR   ) );
 
     GLCall( glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S    , GL_CLAMP_TO_BORDER) );
     GLCall( glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T    , GL_CLAMP_TO_BORDER) );
 
     int size = m_Width * m_Height * m_BPP ;
     auto* pData = new unsigned char[size];
+    // TODO : create empty texture;
     memset(pData, 0xFF, size * sizeof(unsigned char)); // empty white
 //    GLCall( glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, m_Width, m_Height, GL_RGBA, GL_UNSIGNED_BYTE, pData));
     GLCall( glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, m_Width, m_Height, 0, GL_RGBA, GL_UNSIGNED_BYTE, pData ) );
@@ -31,7 +32,7 @@ Texture::Texture(int width, int height, int bpp) :
 }
 
 
-Texture::Texture(const std::string& path, uint32_t flip) :
+Texture2D::Texture2D(const std::string& path, uint32_t flip) :
     ID(0), m_FilePath(path),
     m_Width(0), m_Height(0), m_BPP(0)
     {
@@ -64,8 +65,8 @@ Texture::Texture(const std::string& path, uint32_t flip) :
      *  texture magnification doesn't use mipmaps and giving it a mipmap filtering option will generate
      *  an OpenGL GL_INVALID_ENUM error code.
      * */
-    GLCall( glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR   ) );
-    GLCall( glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR                 ) );
+    GLCall( glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR   ) );
+    GLCall( glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR   ) );
 
     // Texture wrapping
     /* GL_REPEAT: The default behavior for textures. Repeats the texture image.
@@ -77,8 +78,8 @@ Texture::Texture(const std::string& path, uint32_t flip) :
     GLCall( glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T    , GL_CLAMP_TO_BORDER) );
 
     // Set Border Color
-    float borderColor[] = { 0.5f, 0.5f, 0.5f, 0.5f };
-    GLCall( glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, borderColor) );
+//    float borderColor[] = { 0.5f, 0.5f, 0.5f, 0.5f };
+//    GLCall( glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, borderColor) );
 
     // specify a two-dimensional texture image https://docs.gl/gl4/glTexImage2D
     GLCall( glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, m_Width, m_Height, 0, GL_RGBA, GL_UNSIGNED_BYTE, m_LocalBuffer ) );
@@ -93,7 +94,7 @@ Texture::Texture(const std::string& path, uint32_t flip) :
     }
 }
 
-void Texture::Bind(uint32_t slot) const {
+void Texture2D::Bind(uint32_t slot) const {
     // The main purpose of texture units is to allow us to use more than 1 texture in our shaders.
     // By assigning texture units to the samplers, we can bind to multiple textures at once
     // as long as we activate the corresponding texture unit first
@@ -101,10 +102,10 @@ void Texture::Bind(uint32_t slot) const {
     GLCall( glBindTexture(GL_TEXTURE_2D, ID) );
 }
 
-void Texture::Unbind() {
+void Texture2D::Unbind() {
     GLCall( glBindTexture(GL_TEXTURE_2D, 0) );
 }
 
-Texture::~Texture() {
+Texture2D::~Texture2D() {
     GLCall( glDeleteTextures(1, &ID) );
 }

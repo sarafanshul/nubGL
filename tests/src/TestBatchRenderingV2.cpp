@@ -129,7 +129,7 @@ Test::TestBatchRenderingV2::TestBatchRenderingV2() : TestDebugLayer() {
 
     shader->Bind();
     for(int i = 0 ; i < mTextureAssets.size() ; i++){
-        textureMap[i] = CreateScope<Texture>(mTextureAssets[i]);
+        textureMap[i] = CreateScope<Texture2D>(mTextureAssets[i]);
     }
 
     auto loc = glGetUniformLocation(shader->GetId(),"mTextures");

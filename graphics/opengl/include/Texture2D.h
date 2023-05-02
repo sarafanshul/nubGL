@@ -2,8 +2,8 @@
 // Created by Anshul Saraf on 17/09/22.
 //
 
-#ifndef OPENGLBASICS_TEXTURE_H
-#define OPENGLBASICS_TEXTURE_H
+#ifndef OPENGLBASICS_TEXTURE2D_H
+#define OPENGLBASICS_TEXTURE2D_H
 
 #include "glad/glad.h"
 #include <string>
@@ -12,12 +12,12 @@
  * Abstraction for GL Texture2D
  * https://learnopengl.com/Getting-started/Textures
  */
-class Texture {
+class Texture2D {
 public:
 
-    explicit Texture(const std::string& path, uint32_t flip = 1);
+    explicit Texture2D(const std::string& path, uint32_t flip = 1);
 
-    explicit Texture(int width, int height, int bpp);
+    explicit Texture2D(int width, int height, int bpp);
 
     void Bind(uint32_t slot = 0) const;
 
@@ -29,7 +29,7 @@ public:
 
     operator GLuint() const { return ID;};
 
-    ~Texture();
+    ~Texture2D();
 
 private:
     GLuint ID;
@@ -38,4 +38,4 @@ private:
 };
 
 
-#endif //OPENGLBASICS_TEXTURE_H
+#endif //OPENGLBASICS_TEXTURE2D_H

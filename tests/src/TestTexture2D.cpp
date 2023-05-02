@@ -40,11 +40,15 @@ Test::TestTexture2D::TestTexture2D() {
 
     vertexArray->AddBuffer(*vertexBuffer, layout);
 
-    texture0 = CreateScope<Texture>(texture_path);
+    texture0 = CreateScope<Texture2D>(texture_path);
 
-    shaderProgram->Bind();
-    texture0->Bind(slot0);
-    shaderProgram->setInt("u_Texture0", slot0);
+#if TEXTURE_CONVERTER
+    converter = CreateScope<TextureConverter>(texture0->GetWidth(), texture0->GetHeight());
+    renderTexture = CreateScope<Texture2D>(texture0->GetWidth(), texture0->GetHeight(), 4);
+#endif
+//    shaderProgram->Bind();
+//    texture0->Bind(slot0);
+//    shaderProgram->setInt("u_Texture0", slot0);
 
     vertexArray->Unbind();
     vertexBuffer->Unbind();
@@ -53,7 +57,7 @@ Test::TestTexture2D::TestTexture2D() {
     shaderProgram->Unbind();
 
 #if COPY_TEXTURE
-    texture1 = CreateScope<Texture>(
+    texture1 = CreateScope<Texture2D>(
             texture0->GetWidth(),
             texture0->GetHeight(),
             texture0->GetBPP() ) ;
@@ -145,6 +149,11 @@ Test::TestTexture2D::~TestTexture2D() {
 #endif
 
     renderer.reset();
+
+#if TEXTURE_CONVERTER
+    converter.reset();
+    renderer.reset();
+#endif
 }
 
 TEST_RETURN Test::TestTexture2D::OnUpdate(float deltaTime) {
@@ -156,12 +165,15 @@ TEST_RETURN Test::TestTexture2D::OnRender() {
 
     renderer->Clear() ;
 
-    shaderProgram->Bind();
-#if 1
-    texture1->Bind(slot0);
+#if TEXTURE_CONVERTER
+    converter->convert(*texture0, *renderTexture);
+    GLCall(glBindTexture(GL_TEXTURE_2D, 0));
+    renderTexture->Bind(slot0);
 #else
     texture0->Bind(slot0);
 #endif
+    shaderProgram->Bind();
+    shaderProgram->setInt("u_Texture0", slot0);
 
     renderer->DrawElements(*vertexArray, *indexBuffer, *shaderProgram);
 
