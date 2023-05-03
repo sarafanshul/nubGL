@@ -12,7 +12,7 @@ Test::TestTexture2D::TestTexture2D() {
     GLfloat vertices[] = {
 //            x      y     z        t_x   t_y
             -0.5,  -0.5,  0.0,     0.0f,  0.0f,    // bottom left
-             0.5,  -0.5,  0.0,     1.0f,  0.0f,    // bottom right
+             0.5,  -0.1,  0.0,     1.0f,  0.0f,    // bottom right
              0.5,   0.5,  0.0,     1.0f,  1.0f,    // top right
             -0.5,   0.5,  0.0,     0.0f,  1.0f,    // top left
     };
@@ -43,7 +43,7 @@ Test::TestTexture2D::TestTexture2D() {
     texture0 = CreateScope<Texture2D>(texture_path);
 
 #if TEXTURE_CONVERTER
-    converter = CreateScope<TextureConverter>(texture0->GetWidth(), texture0->GetHeight());
+    converter = CreateScope<TextureConverterV2>(texture0->GetWidth(), texture0->GetHeight());
     renderTexture = CreateScope<Texture2D>(texture0->GetWidth(), texture0->GetHeight(), 4);
 #endif
 //    shaderProgram->Bind();

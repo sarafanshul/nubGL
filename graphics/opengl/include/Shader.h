@@ -19,9 +19,9 @@ std::string get_file_contents(const char* filename);
 class Shader {
 public:
 
-    Shader(const std::string& vertexFile, const std::string& fragmentFile);
+    Shader(const std::string& vertexFile, const std::string& fragmentFile, bool rawSource = false);
 
-    Shader(const char* vertexFile, const char* fragmentFile);
+    Shader(const char* vertexFile, const char* fragmentFile, bool rawSource = false);
 
     void Bind() const;
 

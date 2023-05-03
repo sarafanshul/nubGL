@@ -20,16 +20,23 @@ std::string get_file_contents(const char* filename) {
     throw (errno);
 }
 
-Shader::Shader(const std::string& vertexFile, const std::string& fragmentFile) :
-    Shader(vertexFile.c_str(), fragmentFile.c_str()){}
+Shader::Shader(const std::string& vertexFile, const std::string& fragmentFile, bool rawSource) :
+    Shader(vertexFile.c_str(), fragmentFile.c_str(), rawSource){}
 
 // Constructor that build the Shader Program from 2 different shaders
-Shader::Shader(const char* vertexFile, const char* fragmentFile) {
+Shader::Shader(const char* vertexFile, const char* fragmentFile, bool rawSource) {
 
     // Read vertexFile and fragmentFile and store the strings
-    std::string vertexCode = get_file_contents(vertexFile);
-    std::string fragmentCode = get_file_contents(fragmentFile);
+    std::string vertexCode;
+    std::string fragmentCode;
 
+    if( rawSource ){
+        vertexCode = vertexFile;
+        fragmentCode = fragmentFile;
+    }else {
+        vertexCode = get_file_contents(vertexFile);
+        fragmentCode = get_file_contents(fragmentFile);
+    }
     // Convert the shader source strings into character arrays
     const char* vertexSource = vertexCode.c_str();
     const char* fragmentSource = fragmentCode.c_str();

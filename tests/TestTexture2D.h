@@ -6,7 +6,8 @@
 #define OPENGLBASICS_TESTTEXTURE2D_H
 
 #include "Test.h"
-#include "TextureConverter.h"
+#include "TextureConverterV1.h"
+#include "TextureConverterV2.h"
 
 #define COPY_TEXTURE 0 // copy the data from texture0 to texture1 and then render.
 #define TEXTURE_CONVERTER 1
@@ -42,7 +43,7 @@ namespace Test{
 
         const std::string vert_shader_path = "Shaders/test_texture2D.vert";
         const std::string frag_shader_path = "Shaders/test_texture2D.frag";
-        const std::string texture_path     = "Textures/alpha_image.png";
+        const std::string texture_path     = "Textures/op.jpeg";
 
 #if COPY_TEXTURE
         GLuint fbo;
