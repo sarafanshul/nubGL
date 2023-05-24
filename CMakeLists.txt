@@ -32,7 +32,8 @@ file(GLOB SOURCES CONFIGURE_DEPENDS
         ${PROJECT_SOURCE_DIR}/core/src/*.cpp
         ${PROJECT_SOURCE_DIR}/graphics/opengl/include/*.h
         ${PROJECT_SOURCE_DIR}/graphics/opengl/src/*.cpp
-        ${PROJECT_SOURCE_DIR}/lib/stb_image/stb_image.cpp
+        ${PROJECT_SOURCE_DIR}/lib/stb_image/*.cpp
+        ${PROJECT_SOURCE_DIR}/lib/stb_image/*.h
         ${PROJECT_SOURCE_DIR}/tests/src/*.cpp
         ${PROJECT_SOURCE_DIR}/tests/*.h
         main.cpp
